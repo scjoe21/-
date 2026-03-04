@@ -28,15 +28,23 @@
   const jsDay   = new Date().getDay();
   const todayKey = (jsDay >= 1 && jsDay <= 5) ? jsDay : 5;
 
+  /* 순차 게재 — 새 요일 추가 시 여기에만 추가하면 됨 */
+  const ACTIVE_DAYS = [1, 2, 3, 4];
+
+  /* 오늘 요일이 게재 중이면 오늘, 아니면 가장 최근 게재 요일 */
+  const _defaultDay = ACTIVE_DAYS.includes(todayKey)
+    ? todayKey
+    : Math.max(...ACTIVE_DAYS.filter(d => d <= todayKey), ACTIVE_DAYS[0]);
+
   const _hashDay = parseInt((location.hash.match(/^#day-([1-5])$/) || [])[1], 10);
-  let activeDay = (_hashDay >= 1 && _hashDay <= 5) ? _hashDay : 1; /* 기본값: 월요일 */
+  let activeDay = (ACTIVE_DAYS.includes(_hashDay)) ? _hashDay : _defaultDay;
   let activeSubmission = null; /* 현재 표시 중인 독자 제출글 */
 
   /* ──────────────────────────────────────────────
      STORY STAGING  — 큐레이터 이야기 편집 & 확정
      localStorage에 저장, data.js보다 우선 표시
   ────────────────────────────────────────────── */
-  const STAGING_KEY    = 'story-staging-v1';
+  const STAGING_KEY    = 'story-staging-v2';
   const HISTORY_KEY    = 'story-published-history-v1';
 
   /* ── 게재 이력 관리 ── */
@@ -141,9 +149,6 @@
   function renderWeeklyBar() {
     const el = document.getElementById('weeklyBar');
     if (!el) return;
-
-    /* 현재 게재 중인 요일만 표시 (순차 게재) */
-    const ACTIVE_DAYS = [1, 2, 3, 4, 5];
 
     /* Day pills */
     const daysHtml = ACTIVE_DAYS.map(d => {
@@ -447,7 +452,7 @@
     const qna   = story.qna || {};
 
     const ornament = document.getElementById('storyOrnament');
-    if (!note && !qna.question) {
+    if (!qna.question) {
       el.innerHTML = '';
       if (ornament) ornament.style.display = 'none';
       return;
@@ -456,6 +461,7 @@
 
     let html = '';
 
+    /* Q&A만 표시 (큐레이터 노트 비표시) */
     if (qna.question) {
       html += `
       <div class="qna-section">
@@ -2037,7 +2043,7 @@ ${'═'.repeat(50)}
         `────────────────────────────────────`,
       ].join('\n');
 
-      const subject = encodeURIComponent(`[통찰유머감동] 독자 이야기 제출: ${title} — ${selectedCat}`);
+      const subject = encodeURIComponent(`[Humanzest] 독자 이야기 제출: ${title} — ${selectedCat}`);
       const bodyEnc = encodeURIComponent(mailBody);
       const mailto  = `mailto:${CURATOR_EMAIL}?subject=${subject}&body=${bodyEnc}`;
 
@@ -3130,6 +3136,94 @@ ${styleGuide[category] || '이야기의 감정과 주제를 가장 잘 전달하
       const m = location.hash.match(/^#day-([1-5])$/);
       if (m) setActiveDay(parseInt(m[1], 10));
     });
+
+    /* 모바일 스와이프: 좌우 스와이프로 이전/다음 날 이야기 전환 */
+    (function initSwipeNav() {
+      const el = document.getElementById('mainWrapper');
+      if (!el || !('ontouchstart' in window)) return;
+
+      let startX = 0, startY = 0;
+      const SWIPE_THRESHOLD = 50;
+      const SWIPE_RATIO = 1.5; /* 가로 이동이 세로보다 이 배수 이상일 때만 스와이프로 인식 */
+
+      el.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+
+      el.addEventListener('touchend', function (e) {
+        if (e.changedTouches.length !== 1) return;
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+
+        if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+        if (Math.abs(deltaY) * SWIPE_RATIO > Math.abs(deltaX)) return; /* 세로 스크롤로 판단 */
+
+        const idx = ACTIVE_DAYS.indexOf(activeDay);
+        if (deltaX < 0 && idx < ACTIVE_DAYS.length - 1) {
+          setActiveDay(ACTIVE_DAYS[idx + 1]);
+        } else if (deltaX > 0 && idx > 0) {
+          setActiveDay(ACTIVE_DAYS[idx - 1]);
+        }
+      }, { passive: true });
+    })();
+
+    /* 언어 전환 (한 ↔ EN) */
+    (function initLangToggle() {
+      const btn = document.getElementById('langToggle');
+      if (!btn) return;
+      const html = document.documentElement;
+      const TITLE_KO = 'Humanzest — 통찰·유머·감동';
+      const TITLE_EN = 'Humanzest — Insight·Humor·Emotion';
+      function applyLang(lang) {
+        html.lang = lang;
+        document.title = lang === 'en' ? TITLE_EN : TITLE_KO;
+        btn.textContent = lang === 'en' ? '한' : 'EN';
+        try { localStorage.setItem('site-lang', lang); } catch (e) {}
+      }
+      const saved = (() => { try { return localStorage.getItem('site-lang'); } catch (e) { return null; } })();
+      if (saved === 'en') applyLang('en');
+      btn.addEventListener('click', () => {
+        const next = html.lang === 'en' ? 'ko' : 'en';
+        applyLang(next);
+      });
+    })();
+
+    /* 다크 모드 전환 (시스템 설정 + 수동 토글) */
+    (function initThemeToggle() {
+      const btn = document.getElementById('themeToggle');
+      if (!btn) return;
+      const html = document.documentElement;
+      const STORAGE_KEY = 'site-theme';
+      function setDark(isDark, save) {
+        if (isDark) {
+          html.classList.add('dark');
+          btn.textContent = '☀️';
+          btn.setAttribute('aria-label', '라이트 모드로 전환');
+        } else {
+          html.classList.remove('dark');
+          btn.textContent = '🌙';
+          btn.setAttribute('aria-label', '다크 모드로 전환');
+        }
+        if (save) { try { localStorage.setItem(STORAGE_KEY, isDark ? 'dark' : 'light'); } catch (e) {} }
+      }
+      const saved = (() => { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } })();
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark') setDark(true, false);
+      else if (saved === 'light') setDark(false, false);
+      else setDark(prefersDark, false);
+      btn.addEventListener('click', () => {
+        setDark(!html.classList.contains('dark'), true);
+      });
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          if (!localStorage.getItem(STORAGE_KEY)) setDark(e.matches, false);
+        });
+      }
+    })();
 
     setActiveDay(activeDay);
   }
