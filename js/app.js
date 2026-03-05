@@ -39,6 +39,7 @@
   const _hashDay = parseInt((location.hash.match(/^#day-([1-5])$/) || [])[1], 10);
   let activeDay = (ACTIVE_DAYS.includes(_hashDay)) ? _hashDay : _defaultDay;
   let activeSubmission = null; /* 현재 표시 중인 독자 제출글 */
+  let activeArchive    = null; /* { weekIdx, day } or null — 아카이브 보기 상태 */
 
   /* ──────────────────────────────────────────────
      STORY STAGING  — 큐레이터 이야기 편집 & 확정
@@ -111,6 +112,7 @@
 
   /* Merge staged story over base data.js story */
   function getDisplayStory(day) {
+    if (activeArchive) return STORY_ARCHIVE[activeArchive.weekIdx].stories[activeArchive.day];
     const staged = loadStaging(day);
     if (staged && staged.story) return { ...STORIES[day], ...staged.story };
     return STORIES[day];
@@ -1786,29 +1788,43 @@ ${'═'.repeat(50)}
       html += `</ul></div>`;
     }
 
-    /* 과거 이야기 섹션 */
-    if (pastItems.length) {
-      const grouped = groupByMonth(pastItems);
-      Object.entries(grouped).forEach(([monthLabel, items]) => {
-        html += `<div class="sb-month-group">
-          <div class="sb-month-label">${monthLabel}</div>
+    /* 지난 이야기 섹션 (STORY_ARCHIVE 기반 — 클릭하면 본문 보기 가능) */
+    if (STORY_ARCHIVE.length) {
+      const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금' };
+      html += `<div class="sb-month-group sb-archive-group">
+        <div class="sb-month-label">지난 이야기</div>`;
+      STORY_ARCHIVE.forEach((week, weekIdx) => {
+        html += `<div class="sb-archive-week">
+          <div class="sb-archive-week-label">${week.weekLabel}</div>
           <ul class="sb-date-list">`;
-        items.forEach(it => {
-          html += `<li class="sb-date-item" data-title="${it.title}" role="button" tabindex="0">
-            <span class="sb-date-num">${it.dateStr}</span>
-            <span class="sb-date-title">${it.title}</span>
+        Object.keys(week.stories).forEach(d => {
+          const story = week.stories[d];
+          const isActive = activeArchive && activeArchive.weekIdx === weekIdx && activeArchive.day === Number(d);
+          html += `<li class="sb-date-item sb-archive-item${isActive ? ' active' : ''}" data-week="${weekIdx}" data-day="${d}" role="button" tabindex="0">
+            <span class="sb-date-num">${WEEKDAY_LABEL[d]}</span>
+            <span class="sb-date-title">${story.title}</span>
           </li>`;
         });
         html += `</ul></div>`;
       });
+      html += `</div>`;
     }
 
     nav.innerHTML = html;
 
     nav.querySelectorAll('.sb-date-item[data-day]').forEach(item => {
+      if (item.classList.contains('sb-archive-item')) return;
       const day = parseInt(item.dataset.day, 10);
       if (!day) return;
       const go = () => { setActiveDay(day); closeSidebar(); };
+      item.addEventListener('click', go);
+      item.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); go(); } });
+    });
+
+    nav.querySelectorAll('.sb-archive-item').forEach(item => {
+      const weekIdx = parseInt(item.dataset.week, 10);
+      const day     = parseInt(item.dataset.day,  10);
+      const go = () => { setActiveArchiveStory(weekIdx, day); closeSidebar(); };
       item.addEventListener('click', go);
       item.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); go(); } });
     });
@@ -1882,8 +1898,37 @@ ${'═'.repeat(50)}
   /* ──────────────────────────────────────────────
      DAY NAVIGATION  — setActiveDay
   ────────────────────────────────────────────── */
+  function setActiveArchiveStory(weekIdx, day) {
+    activeSubmission = null;
+    activeArchive    = { weekIdx, day };
+    activeDay        = day;
+    history.replaceState(null, '', '#archive-' + weekIdx + '-' + day);
+    const seasonCls = [...document.body.classList].find(c => c.startsWith('season-'));
+    document.body.className = `day-${day}${seasonCls ? ' ' + seasonCls : ''}`;
+    renderDayLabel(day);
+    renderDateSeason(day);
+    renderIllustration(day);
+    renderStory(day);
+    renderQnA(day);
+    renderTopbarDay(day);
+    renderBadges(day);
+    renderAnalysis(day);
+    renderSitesSub(day);
+    renderSearchGuide(day);
+    renderSources(day);
+    renderWeekProgress();
+    renderWeeklyBar();
+    document.querySelectorAll('.sb-date-item[data-day]').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.sb-archive-item').forEach(el => el.classList.remove('active'));
+    const target = document.querySelector(`.sb-archive-item[data-week="${weekIdx}"][data-day="${day}"]`);
+    if (target) target.classList.add('active');
+    const wrapper = document.getElementById('mainWrapper');
+    if (wrapper) wrapper.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function setActiveDay(day) {
     activeSubmission = null;
+    activeArchive    = null;
     activeDay = day;
     history.replaceState(null, '', '#day-' + day);
 
