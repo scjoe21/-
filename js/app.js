@@ -29,7 +29,7 @@
   const todayKey = (jsDay >= 1 && jsDay <= 5) ? jsDay : 5;
 
   /* 순차 게재 — 새 요일 추가 시 여기에만 추가하면 됨 */
-  const ACTIVE_DAYS = [1, 2, 3, 4];
+  const ACTIVE_DAYS = [1, 2, 3, 4, 5];
 
   /* 오늘 요일이 게재 중이면 오늘, 아니면 가장 최근 게재 요일 */
   const _defaultDay = ACTIVE_DAYS.includes(todayKey)
@@ -1722,7 +1722,7 @@ ${'═'.repeat(50)}
     const pastItems = [];
     Object.values(history).forEach(entry => {
       if (!entry || !entry.title) return;
-      const ts = entry.confirmedAt || entry.addedAt;
+      const ts = entry.publishedAt || entry.confirmedAt || entry.addedAt;
       if (!ts) return;
       const dt = new Date(ts);
       /* 이번 주와 겹치면 제외 */

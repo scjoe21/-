@@ -512,64 +512,122 @@ const ILLUSTRATIONS = {
   <text x="300" y="275" text-anchor="middle" font-size="11" fill="#7090a8" font-family="Arial,sans-serif" opacity="0.88">— Carl Sagan, Pale Blue Dot, 1994</text>
 </svg>`,
 
-  /* ══ 금요일 — 경제·정치 — 통찰 → 미니멀 대비 ══
-     핵심어 두 개만: 공포 vs 안심
-     텍스트 레이블 모두 제거 — 인물 대비로만 통찰 전달 */
+  /* ══ 금요일 — 과학·정치 — 유머 → 선 드로잉 ══
+     파인만의 O링 청문회 장면
+     왼쪽: NASA 보고서 더미 / 중앙: 얼음물 컵 + C집게 O링 / 오른쪽: 파인만 + 마이크 */
   5: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" translate="no">
   <defs>
-    <filter id="cloud5" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="12"/>
-    </filter>
-    <filter id="glow5" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="20"/>
-    </filter>
-    <!-- 스케치: 분석적 다이어그램·손그림 선 흔들림 -->
-    <filter id="sketch5" x="-5%" y="-5%" width="110%" height="110%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="3" seed="7" result="noise"/>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+    <filter id="wc5" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="3" seed="17" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="8" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
   </defs>
-  <!-- 배경 -->
-  <rect width="600" height="280" fill="#f9f8f6"/>
-  <!-- 중앙 구분선 -->
-  <line x1="300" y1="20" x2="300" y2="260" stroke="#e2deda" stroke-width="1.5"/>
 
-  <!-- ══ 왼쪽: 공포 ══ -->
-  <!-- 핵심어 "공포" — 크고 선명하게 -->
-  <text x="150" y="54" text-anchor="middle" font-size="32" fill="#607d8b" font-family="Arial,sans-serif" font-weight="bold" opacity="0.82">공포</text>
-  <!-- 먹구름 — 여러 겹 흐림 -->
-  <ellipse cx="126" cy="95" rx="36" ry="19" fill="#90a4ae" opacity="0.48" filter="url(#cloud5)"/>
-  <ellipse cx="168" cy="90" rx="32" ry="17" fill="#78909c" opacity="0.40" filter="url(#cloud5)"/>
-  <ellipse cx="150" cy="103" rx="58" ry="22" fill="#90a4ae" opacity="0.55" filter="url(#cloud5)"/>
-  <ellipse cx="150" cy="101" rx="56" ry="20" fill="#b0bec5" opacity="0.40"/>
-  <!-- 아래로 누르는 화살표 -->
-  <line x1="150" y1="122" x2="150" y2="136" stroke="#78909c" stroke-width="3.5" stroke-linecap="round"/>
-  <polygon points="143,136 150,146 157,136" fill="#78909c"/>
-  <!-- 움츠러든 사람 — 머리 숙이고 팔 늘어짐 -->
-  <circle cx="150" cy="162" r="14" fill="#78909c" opacity="0.82"/>
-  <line x1="150" y1="176" x2="148" y2="185" stroke="#78909c" stroke-width="7" stroke-linecap="round" opacity="0.75"/>
-  <path d="M141 185 Q128 203 126 228 L174 228 Q172 203 159 185 Z" fill="#78909c" opacity="0.68" filter="url(#sketch5)"/>
-  <path d="M135 193 Q112 208 104 224" stroke="#78909c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.65"/>
-  <path d="M165 193 Q188 208 196 224" stroke="#78909c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.65"/>
+  <!-- 크림 배경 -->
+  <rect width="600" height="280" fill="#f8f7f4"/>
 
-  <!-- ══ 오른쪽: 안심 ══ -->
-  <!-- 핵심어 "안심" — 크고 선명하게 -->
-  <text x="450" y="54" text-anchor="middle" font-size="32" fill="#2e7d32" font-family="Arial,sans-serif" font-weight="bold" opacity="0.88">안심</text>
-  <!-- 밝은 빛 — 열린 공간 -->
-  <ellipse cx="450" cy="98" rx="75" ry="30" fill="#66bb6a" opacity="0.14" filter="url(#glow5)"/>
-  <ellipse cx="450" cy="92" rx="50" ry="22" fill="#81c784" opacity="0.20" filter="url(#glow5)"/>
-  <ellipse cx="450" cy="92" rx="48" ry="20" fill="#c8e6c9" opacity="0.35"/>
-  <!-- 위로 향하는 화살표 -->
-  <line x1="450" y1="113" x2="450" y2="127" stroke="#43a047" stroke-width="3.5" stroke-linecap="round"/>
-  <polygon points="443,121 450,112 457,121" fill="#43a047"/>
-  <!-- 당당히 선 사람 — 머리 들고 팔 활짝 -->
-  <circle cx="450" cy="146" r="16" fill="#43a047" opacity="0.82"/>
-  <line x1="450" y1="162" x2="450" y2="171" stroke="#43a047" stroke-width="7" stroke-linecap="round" opacity="0.75"/>
-  <path d="M441 171 Q430 191 428 228 L472 228 Q470 191 459 171 Z" fill="#43a047" opacity="0.68" filter="url(#sketch5)"/>
-  <path d="M434 180 Q410 170 396 162" stroke="#43a047" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.78"/>
-  <path d="M466 180 Q490 170 504 162" stroke="#43a047" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.78"/>
-  <!-- 안전망 바닥선 -->
-  <rect x="402" y="231" width="96" height="7" rx="3.5" fill="#43a047" opacity="0.38"/>
+  <!-- ── 청문회 테이블 ── -->
+  <g filter="url(#wc5)">
+    <rect x="0" y="212" width="600" height="12" fill="#e0d8cc" stroke="#2a2a2a" stroke-width="1.8"/>
+    <rect x="0" y="224" width="600" height="56" fill="#d8cfc2"/>
+  </g>
+
+  <!-- ── 왼쪽: NASA 보고서 더미 ── -->
+  <g filter="url(#wc5)" stroke="#2a2a2a" stroke-linecap="round">
+    <!-- 두꺼운 바인더 -->
+    <rect x="28" y="158" width="78" height="54" rx="2" fill="#c4b49a" stroke-width="2.0"/>
+    <rect x="28" y="158" width="10" height="54" rx="1" fill="#8a7860" stroke-width="1.5"/>
+    <!-- 바인더 텍스트 줄 -->
+    <line x1="44" y1="170" x2="100" y2="170" stroke-width="0.8" opacity="0.45"/>
+    <line x1="44" y1="177" x2="97"  y2="177" stroke-width="0.8" opacity="0.45"/>
+    <line x1="44" y1="184" x2="99"  y2="184" stroke-width="0.8" opacity="0.45"/>
+    <line x1="44" y1="191" x2="95"  y2="191" stroke-width="0.8" opacity="0.45"/>
+    <line x1="44" y1="198" x2="98"  y2="198" stroke-width="0.8" opacity="0.45"/>
+    <line x1="44" y1="205" x2="94"  y2="205" stroke-width="0.8" opacity="0.45"/>
+    <!-- 종이 더미 위로 -->
+    <rect x="22" y="147" width="76" height="14" rx="1" fill="#f5f2ec" stroke-width="1.3"/>
+    <rect x="18" y="136" width="76" height="14" rx="1" fill="#f8f5ef" stroke-width="1.3"/>
+    <rect x="24" y="125" width="74" height="14" rx="1" fill="#f5f2ec" stroke-width="1.3"/>
+    <rect x="20" y="114" width="74" height="14" rx="1" fill="#f8f5ef" stroke-width="1.3"/>
+    <!-- 종이 내용 선 -->
+    <line x1="28" y1="140" x2="90" y2="140" stroke-width="0.6" opacity="0.35"/>
+    <line x1="28" y1="129" x2="88" y2="129" stroke-width="0.6" opacity="0.35"/>
+    <line x1="28" y1="118" x2="88" y2="118" stroke-width="0.6" opacity="0.35"/>
+  </g>
+
+  <!-- ── 중앙: 얼음물 컵 ── -->
+  <g filter="url(#wc5)" stroke-linecap="round">
+    <!-- 컵 본체 -->
+    <path d="M218 118 L208 212 L308 212 L298 118 Z" stroke="#1a1a1a" stroke-width="2.5" fill="#e8f4fb" fill-opacity="0.55"/>
+    <!-- 컵 윗테두리 -->
+    <line x1="215" y1="118" x2="301" y2="118" stroke="#1a1a1a" stroke-width="2.8"/>
+    <!-- 물 표면 -->
+    <path d="M210 140 Q240 134 263 140 Q282 145 305 138" stroke="#4a8fb8" stroke-width="1.4" fill="none"/>
+    <!-- 물 속 채우기 -->
+    <path d="M210 140 Q240 134 263 140 Q282 145 305 138 L308 212 L208 212 Z" fill="#c8e8f8" fill-opacity="0.35" stroke="none"/>
+    <!-- 얼음 조각 1 -->
+    <rect x="220" y="148" width="22" height="20" rx="2" fill="#dff3fc" stroke="#6ab0d8" stroke-width="1.3" transform="rotate(14,231,158)"/>
+    <!-- 얼음 조각 2 -->
+    <rect x="250" y="155" width="20" height="18" rx="2" fill="#dff3fc" stroke="#6ab0d8" stroke-width="1.3" transform="rotate(-9,260,164)"/>
+    <!-- 얼음 조각 3 -->
+    <rect x="276" y="148" width="18" height="17" rx="2" fill="#dff3fc" stroke="#6ab0d8" stroke-width="1.3" transform="rotate(6,285,156)"/>
+    <!-- 물 반짝임 -->
+    <line x1="224" y1="172" x2="230" y2="169" stroke="#90ccec" stroke-width="1.8" opacity="0.65"/>
+    <line x1="292" y1="176" x2="298" y2="173" stroke="#90ccec" stroke-width="1.8" opacity="0.65"/>
+  </g>
+
+  <!-- ── C집게 + O링 (컵에 담그는 중) ── -->
+  <g filter="url(#wc5)" stroke="#1a1a1a" fill="none" stroke-linecap="round">
+    <!-- C집게 몸체 -->
+    <path d="M264 55 Q294 55 306 72 Q318 90 306 110 Q294 128 264 128" stroke-width="3.2"/>
+    <!-- 집게 양끝 -->
+    <line x1="258" y1="55"  x2="264" y2="55"  stroke-width="2.8"/>
+    <line x1="258" y1="128" x2="264" y2="128" stroke-width="2.8"/>
+    <!-- O링 — 집게 안쪽에 끼워진 고무링 -->
+    <ellipse cx="258" cy="91" rx="18" ry="8" stroke="#5a3010" stroke-width="4.5" fill="none"/>
+    <!-- 집게 자루 -->
+    <line x1="258" y1="91" x2="170" y2="68" stroke-width="3.2"/>
+    <!-- 손가락들 -->
+    <path d="M170 68 Q158 62 153 57 Q148 52 151 46 Q154 40 161 44" stroke-width="2.2"/>
+    <path d="M161 44 Q167 33 175 38 Q182 30 190 36 Q197 29 204 36" stroke-width="2.0"/>
+    <path d="M204 36 Q212 38 207 49 Q202 58 197 63" stroke-width="2.0"/>
+    <path d="M151 46 Q146 40 148 33 Q151 27 156 30" stroke-width="1.7"/>
+  </g>
+
+  <!-- ── 오른쪽: 파인만 (테이블에 앉아 집게를 쥔) ── -->
+  <g filter="url(#wc5)" stroke="#1a1a1a" fill="none" stroke-linecap="round">
+    <!-- 머리 -->
+    <circle cx="450" cy="148" r="20" stroke-width="2.2"/>
+    <!-- 머리카락 -->
+    <path d="M432 145 Q438 130 450 127 Q462 130 468 145" stroke-width="2.0"/>
+    <!-- 안경 -->
+    <path d="M438 146 Q444 142 450 146" stroke-width="1.3" opacity="0.75"/>
+    <path d="M450 146 Q456 142 462 146" stroke-width="1.3" opacity="0.75"/>
+    <line x1="436" y1="146" x2="438" y2="146" stroke-width="1.3" opacity="0.75"/>
+    <line x1="462" y1="146" x2="464" y2="146" stroke-width="1.3" opacity="0.75"/>
+    <!-- 목 -->
+    <line x1="450" y1="168" x2="450" y2="176" stroke-width="2.5"/>
+    <!-- 몸통 -->
+    <line x1="436" y1="176" x2="464" y2="176" stroke-width="2.0"/>
+    <path d="M436 176 Q432 200 430 212" stroke-width="2.8"/>
+    <path d="M464 176 Q468 200 470 212" stroke-width="2.8"/>
+    <!-- 왼팔: 집게 쥐고 뻗음 -->
+    <path d="M436 182 Q380 155 310 128" stroke-width="2.5"/>
+    <!-- 오른팔: 테이블 위에 -->
+    <path d="M464 182 Q480 196 490 208" stroke-width="2.2"/>
+  </g>
+
+  <!-- ── 오른쪽: 마이크 ── -->
+  <g filter="url(#wc5)" stroke="#1a1a1a" fill="none" stroke-linecap="round">
+    <ellipse cx="540" cy="162" rx="13" ry="19" stroke-width="2.0" fill="#ddd8d0" fill-opacity="0.5"/>
+    <line x1="534" y1="150" x2="546" y2="150" stroke-width="0.9" opacity="0.55"/>
+    <line x1="532" y1="157" x2="548" y2="157" stroke-width="0.9" opacity="0.55"/>
+    <line x1="531" y1="164" x2="549" y2="164" stroke-width="0.9" opacity="0.55"/>
+    <line x1="532" y1="171" x2="548" y2="171" stroke-width="0.9" opacity="0.55"/>
+    <line x1="534" y1="178" x2="546" y2="178" stroke-width="0.9" opacity="0.55"/>
+    <line x1="540" y1="181" x2="540" y2="212" stroke-width="2.2"/>
+    <line x1="526" y1="212" x2="554" y2="212" stroke-width="2.0"/>
+  </g>
 </svg>`,
 
   /* ══ 월요일용 v3 — 배니스터 4분의 벽 — soft watercolor wash ══
@@ -933,44 +991,45 @@ const STORIES = {
     publishedDate: '2026년 3월'
   },
 
-  /* ═══ 금요일 — 경제·정치 (PRIMARY: 통찰) ═══ */
+  /* ═══ 금요일 — 과학·정치 (PRIMARY: 유머) ═══ */
   5: {
-    title: '핀란드가 배운 것',
-    category: '경제·정치',
-    primaryType: '통찰',
-    types: ['통찰', '감동'],
+    title: '파인만의 O링',
+    category: '과학·정치',
+    primaryType: '유머',
+    types: ['유머', '통찰'],
     image: 'images/story-fri.png',
     svgKey: 5,
     body: [
-      '2017년, 핀란드가 실험을 시작했다. 무작위로 선발한 실업자 2천 명에게 매달 560유로를 조건 없이 줬다. 일을 하든 안 하든, 다른 소득이 생기든 안 생기든. 그냥 줬다.',
-      '경제학자들이 예측한 결과가 있었다. 사람들이 일을 더 안 할 것이다. 공짜 돈을 받으면 아무도 일어나서 출근하지 않는다. 인간은 원래 게으르다.',
-      '2년 후 결과가 나왔다.',
-      '취업률이 올랐다. 일자리를 찾은 사람이 대조군보다 더 많았다.',
-      '하지만 더 중요한 수치는 다른 곳에 있었다. 정신 건강 지수. 자신감. 삶에 대한 신뢰도. 이 숫자들이 훨씬 크게 올랐다.',
-      '연구자들이 참가자들을 인터뷰했다. "무엇이 달라졌나요?"',
-      '한 남자가 대답했다. "전에는 구직 신청서를 낼 때마다 거절당하는 게 두려웠어요. 실패하면 다음달 집세가 없으니까. 지금은 거절당해도 괜찮아요. 기본적인 것은 해결되니까."',
-      '공포가 사라진 것이다.',
-      '가난이 사람을 게으르게 만드는 게 아니었다. 가난은 사람을 작아지게 만들었다. 실수하면 모든 게 무너진다는 공포가 사람을 움츠러들게 했다. 기본 소득은 돈이 아니라 실패해도 된다는 허락이었다.',
-      '경제학자들이 틀린 게 아니었다. 그들은 옳은 질문을 한 게 아니었다. "사람들이 일을 할 것인가"가 아니라 "사람들이 어떤 상태에서 가장 잘 일하는가"를 물었어야 했다.'
+      '1986년 1월 28일, 챌린저 우주왕복선이 발사 73초 만에 공중에서 분해됐다. 승무원 7명이 전원 사망했다. 미국 역사상 가장 충격적인 우주 사고였다.',
+      '레이건 대통령은 조사위원회를 꾸렸다. 전직 국무장관, 최초의 달 착륙자 닐 암스트롱, 최초의 여성 우주비행사 샐리 라이드. 그리고 노벨물리학상을 받은 리처드 파인만.',
+      '위원회는 수개월 동안 청문회를 열었다. 나사가 제출한 보고서는 수백 페이지였다. 엔지니어들이 줄지어 증언했다. 기술 용어가 가득한 슬라이드가 이어졌다.',
+      '파인만은 따로 움직였다. 나사 청사를 돌아다니며 현장 엔지니어들을 직접 만났다. 회의실이 아니라 복도에서, 점심 식사를 하며. 그리고 한 가지를 알아냈다. 발사 당일 기온이 영하에 가까웠다. 고체로켓부스터의 이음새를 막는 고무 링 — O링 — 이 추위에 굳으면 탄성을 잃는다.',
+      '청문회 당일, 파인만은 준비물을 하나 가져왔다. 얼음물 한 컵.',
+      '증언 순서가 됐다. 그는 나사로부터 받은 O링 샘플 조각을 꺼냈다. C자 집게로 집어 얼음물에 담갔다. 몇 초 기다렸다. 꺼냈다. 집게를 놓자 — O링이 원래 모양으로 돌아오지 않았다.',
+      '그는 마이크를 향해 말했다. "이것이 우리 문제와 관련이 있다고 생각합니다."',
+      '회의장이 조용해졌다.',
+      '수백 페이지 보고서와 수개월 청문회가 있었다. 그리고 한 물리학자가 얼음물 한 컵으로 30초 만에 원인을 보여줬다.',
+      '파인만은 최종 보고서에 서명하지 않았다. 대신 독립 의견을 부록으로 달았다. 그 안에 이런 문장이 있었다. "기술이 성공하려면 현실이 홍보보다 앞서야 한다. 자연은 속일 수 없기 때문이다."',
+      '그는 그 청문회가 있던 해 이미 신장암 진단을 받은 상태였다. 2년 후 세상을 떠났다. 마지막까지 그는 복잡한 것을 단순하게 보는 사람이었다.'
     ],
-    closing: '가장 실용적인 것이 가장 인간적인 것일 때가 있다.\n효율을 위한 실험이 존엄의 이야기가 됐다.',
+    closing: '진실은 대개 단순하다.\n복잡한 것은 진실이 아니라, 진실을 가리는 것들이다.',
     analysis: {
-      insight: { icon: '💡', text: '가난은 게으름의 원인이 아니라, 공포의 원인이었다 — 질문이 달라지면 진실이 달라진다.',
-                 condition: '반대 입장에서 보면 오히려 더 맞는 이야기일 때' },
-      humor:   { icon: '😄', text: '돈을 공짜로 주면 게을러진다는 가장 상식적인 예측이 완전히 틀렸다.',
-                 condition: '기대를 만들었다가 완전히 다른 방향으로 어긋날 때' },
-      emotion: { icon: '❤️', text: '"실패해도 괜찮아요" — 이 한 문장이 사람을 다시 일으켜 세웠다.',
-                 condition: '취약함을 숨기지 않고 마주하는 순간' }
+      insight: { icon: '💡', text: '복잡한 언어 뒤에 진실이 숨는다 — 단순하게 보여줄 수 있어야 진짜 이해다.',
+                 condition: '완전히 다른 두 분야에서 같은 구조가 보이는 이야기' },
+      humor:   { icon: '😄', text: '수백 페이지 보고서와 수개월 청문회를 얼음물 한 컵이 이겼다.',
+                 condition: '거대한 것이 작게, 작은 것이 거대하게 다뤄질 때' },
+      emotion: { icon: '❤️', text: '"자연은 속일 수 없다" — 암 투병 중에도 진실 앞에서 타협하지 않은 마지막 문장.',
+                 condition: '말하지 못했던 것이 침묵 속에서 말해질 때' }
     },
     source: {
-      type: '재서술',
-      credit: '핀란드 기본소득 실험(2017–2018, Kela – 핀란드 사회보험기관)의 공식 결과 보고서를 바탕으로 재서술했습니다.',
-      url: 'https://www.kela.fi/web/en/basic-income-experiment-2017-2018'
+      type: '실화',
+      credit: 'Richard Feynman (1918–1988) / 대통령 우주왕복선사고조사위원회 청문회, 1986년 2월',
+      url: 'https://www.britannica.com/biography/Richard-Feynman'
     },
-    curatorNote: '이 실험이 보여준 건 돈의 효과가 아니라 공포의 크기였습니다. 우리가 하지 못하는 일들 중에, 사실 공포 때문에 못 하는 것이 얼마나 많은지 생각해봤습니다.',
+    curatorNote: '파인만이 청문회에 얼음물 한 컵을 들고 나타났다는 장면이 자꾸 생각납니다. 준비물이 그것뿐이었다는 것. 수백 페이지 보고서를 읽은 사람들 앞에서, 그는 30초짜리 실험을 했습니다.',
     qna: {
-      question: '만약 생존의 걱정이 없다면, 당신은 지금 못 하고 있는 어떤 일에 도전하겠습니까?',
-      answer: '핀란드 실험이 보여준 건 돈의 효과가 아니라 공포의 크기였습니다. 실패와 가난에 대한 두려움이 사라지자 사람들은 더 기꺼이 새로운 것을 시도했습니다. 우리가 못 하는 일들 중 얼마나 많은 것이 능력의 부족이 아니라 두려움 때문인지 생각해볼 때입니다.'
+      question: '지금 당신이 복잡하게 느끼는 문제가 있다면, 그것을 얼음물 한 컵으로 보여줄 수 있을 만큼 단순하게 말할 수 있습니까?',
+      answer: '파인만이 보여준 건 물리 실험이 아니라 사고방식이었습니다. 진짜 이해는 단순하게 말할 수 있어야 한다는 것. 복잡한 언어 뒤에 숨어있는 것이 무지인지 진실인지, 그 질문을 계속 가져가는 것이 파인만식 사고입니다.'
     },
     publishedDate: '2026년 3월'
   }
