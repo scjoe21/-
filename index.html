@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>깨유감</title>
+  <title>Humanzest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;600;700&family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
@@ -81,18 +81,22 @@
     <aside class="story-sidebar" id="storySidebar">
       <div class="sidebar-brand">
         <a class="sidebar-logo" href="#" id="sidebarLogo" aria-label="홈으로">
-          <span class="logo-brand"><span class="logo-i">깨</span><span class="logo-h">유</span><span class="logo-e">감</span></span>
-          <span class="logo-sub">깨달음 · 유머 · 감동</span>
+          <span class="logo-brand">Humanzest</span>
+          <span class="logo-sub">매일 떠나는 생각의 기차여행</span>
         </a>
         <button class="sidebar-close" id="sidebarClose" aria-label="닫기">✕</button>
       </div>
       <p class="sidebar-tagline">매일 한 편, 더 나은 나와 세상을 향하여</p>
 
-      <nav class="sidebar-nav" id="sidebarNav" aria-label="이야기 목록">
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="이야기 내비게이션">
         <!-- Rendered by JS -->
       </nav>
 
-      <div class="sidebar-footer-area"></div>
+      <div class="sidebar-footer-area">
+        <img src="images/train-sidebar.png"
+             class="sidebar-train-img"
+             alt="매일 떠나는 생각의 기차여행 — 사랑·문학·철학·과학·경제" />
+      </div>
     </aside>
 
     <!-- ===== MAIN WRAPPER ===== -->
@@ -100,15 +104,14 @@
 
       <!-- Mobile topbar -->
       <div class="topbar" id="topbar">
-        <button class="topbar-menu" id="sidebarToggle" aria-label="이야기 목록 열기">
+        <button class="topbar-menu" id="sidebarToggle" aria-label="메뉴 열기">
           <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
             <rect width="18" height="2" rx="1" fill="currentColor"/>
             <rect y="6" width="18" height="2" rx="1" fill="currentColor"/>
             <rect y="12" width="18" height="2" rx="1" fill="currentColor"/>
           </svg>
-          <span>이야기 목록</span>
         </button>
-        <span class="topbar-brand"><span class="logo-i">깨</span><span class="logo-h">유</span><span class="logo-e">감</span></span>
+        <span class="topbar-brand">Humanzest</span>
         <span class="topbar-day" id="topbarDay"></span>
       </div>
 
@@ -199,7 +202,7 @@
       <!-- ===== FOOTER ===== -->
       <footer class="site-footer">
         <div class="sub-container">
-          <p class="footer-logo"><span class="logo-i">깨</span><span class="logo-h">유</span><span class="logo-e">감</span></p>
+          <p class="footer-logo">Humanzest</p>
           <p class="footer-copy">매주 월–금 업데이트 · 통찰유머감동 2025</p>
         </div>
       </footer>

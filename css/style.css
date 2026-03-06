@@ -356,6 +356,18 @@ html, body { height: 100%; }
   flex-shrink: 0;
 }
 
+.sidebar-train-img {
+  display: block;
+  width: calc(100% - 1.6rem);
+  margin: 0.6rem 0.8rem 1rem;
+  border-radius: var(--r-sm);
+  opacity: 0.92;
+  transition: opacity 0.2s;
+}
+.sidebar-train-img:hover {
+  opacity: 1;
+}
+
 /* Mobile overlay */
 .sidebar-overlay {
   display: none;
