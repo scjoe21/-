@@ -1044,7 +1044,7 @@ const STORY_ARCHIVE = [
         category: '의학·역사',
         primaryType: '감동',
         types: ['감동', '통찰'],
-        image: 'images/story-mon.png',
+        image: 'images/story-w1-mon.png',
         svgKey: 6,
         body: [
           '1847년 봄, 빈 종합병원. 이그나즈 제멜바이스는 숫자를 들여다보고 있었다. 같은 건물 안의 두 산부인과 병동이었다. 1병동의 산모 사망률은 10~35%였다. 2병동은 4%였다.',
@@ -1085,7 +1085,7 @@ const STORY_ARCHIVE = [
         category: '역사·문학',
         primaryType: '통찰',
         types: ['통찰', '감동'],
-        image: 'images/story-tue.png',
+        image: 'images/story-w1-tue.png',
         svgKey: null,
         body: [
           '1849년 12월 22일, 상트페테르부르크. 영하의 새벽, 세메노프스키 광장.',
@@ -1125,7 +1125,7 @@ const STORY_ARCHIVE = [
         category: '철학·심리',
         primaryType: '감동',
         types: ['감동', '통찰'],
-        image: 'images/story-wed.png',
+        image: 'images/story-w1-wed.png',
         svgKey: null,
         body: [
           '로마 시대. 한 주인에게 절름발이 노예가 있었다. 에픽테토스. 주인은 재산이 많았지만 행복하지 못했다. 노예는 가진 것이 없었지만 마음이 평온했다.',
@@ -1163,7 +1163,7 @@ const STORY_ARCHIVE = [
         category: '과학·문화',
         primaryType: '감동',
         types: ['감동', '통찰'],
-        image: 'images/story-thu.png',
+        image: 'images/story-w1-thu.png',
         svgKey: 4,
         body: [
           '보이저 1호가 지구를 떠났다. 해는 1977년 가을이었다. 탐사 목적은 목성과 토성이었다. 임무가 끝나면 태양계 밖으로 나가게 되어 있었다. 더 이상 돌아볼 이유가 없었다.',
@@ -1206,7 +1206,7 @@ const STORY_ARCHIVE = [
         category: '과학·정치',
         primaryType: '유머',
         types: ['유머', '통찰'],
-        image: 'images/story-fri.png',
+        image: 'images/story-w1-fri.png',
         svgKey: 5,
         body: [
           '1986년 1월 28일, 챌린저 우주왕복선이 발사 73초 만에 공중에서 분해됐다. 승무원 7명이 전원 사망했다. 미국 역사상 가장 충격적인 우주 사고였다.',
