@@ -160,6 +160,10 @@ html, body { height: 100%; }
   flex-direction: column;
   gap: 0.15rem;
 }
+.sidebar-logo .logo-hu  { color: #C85A1A; }
+.sidebar-logo .logo-man { color: #2E6830; }
+.sidebar-logo .logo-ze  { color: #52965A; }
+.sidebar-logo .logo-st  { color: #CC3828; }
 .sidebar-logo .logo-brand {
   font-size: 1.5rem;
   font-weight: 700;
@@ -356,16 +360,29 @@ html, body { height: 100%; }
   flex-shrink: 0;
 }
 
+.sidebar-train-track {
+  overflow: hidden;
+  width: 100%;
+  margin: 0.6rem 0 1rem;
+}
+
+.sidebar-train-scroll {
+  display: flex;
+  will-change: transform;
+  animation: trainScroll 4s linear infinite;
+}
+
 .sidebar-train-img {
   display: block;
-  width: calc(100% - 1.6rem);
-  margin: 0.6rem 0.8rem 1rem;
-  border-radius: var(--r-sm);
-  opacity: 0.92;
-  transition: opacity 0.2s;
+  flex-shrink: 0;
+  width: calc(260px / 3);
+  height: auto;
+  opacity: 0.88;
 }
-.sidebar-train-img:hover {
-  opacity: 1;
+
+@keyframes trainScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-260px / 3)); }
 }
 
 /* Mobile overlay */
