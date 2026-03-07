@@ -160,10 +160,10 @@ html, body { height: 100%; }
   flex-direction: column;
   gap: 0.15rem;
 }
-.sidebar-logo .logo-hu  { color: #C85A1A; }
-.sidebar-logo .logo-man { color: #2E6830; }
-.sidebar-logo .logo-ze  { color: #52965A; }
-.sidebar-logo .logo-st  { color: #CC3828; }
+.logo-hu  { color: #C85A1A; }
+.logo-man { color: #2E6830; }
+.logo-ze  { color: #52965A; }
+.logo-st  { color: #CC3828; }
 .sidebar-logo .logo-brand {
   font-size: 1.5rem;
   font-weight: 700;
@@ -369,7 +369,7 @@ html, body { height: 100%; }
 }
 
 .sidebar-bottom-img {
-  width: 100%;
+  width: 66.67%;
   height: auto;
   display: block;
   margin: 0 auto;

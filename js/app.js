@@ -7,8 +7,8 @@
   'use strict';
 
   /* ── Constants ── */
-  const DAY_NAMES   = { 1: '월요일', 2: '화요일', 3: '수요일', 4: '목요일', 5: '금요일' };
-  const DAY_SHORT   = { 1: '월', 2: '화', 3: '수', 4: '목', 5: '금' };
+  const DAY_NAMES   = { 1: '월요일', 2: '화요일', 3: '수요일', 4: '목요일', 5: '금요일', 6: '토요일' };
+  const DAY_SHORT   = { 1: '월', 2: '화', 3: '수', 4: '목', 5: '금', 6: '토' };
   /* ── Gemini Imagen 3 스타일 프롬프트 ── */
   const IMG_STYLE = {
     loose_pen: 'Rendered as a loose gestural pen drawing: confident expressive ink strokes, sketchy editorial line work, crosshatching for shadow, spontaneous hand-drawn quality on warm cream paper.',
@@ -429,14 +429,14 @@
     renderWeekStrip(day);
   }
 
-  const WEEK_DAY_KO  = ['', '월', '화', '수', '목', '금'];
-  const WEEK_TOPIC   = { 1: '사랑', 2: '역사·문학', 3: '철학·심리', 4: '과학·문화', 5: '경제·정치' };
+  const WEEK_DAY_KO  = ['', '월', '화', '수', '목', '금', '토'];
+  const WEEK_TOPIC   = { 1: '사랑', 2: '역사·문학', 3: '철학·심리', 4: '과학·문화', 5: '경제·정치', 6: '에세이' };
 
   function renderWeekStrip(activeDay) {
     const el = document.getElementById('storyWeekStrip');
     if (!el) return;
 
-    const days = [1, 2, 3, 4, 5];
+    const days = [1, 2, 3, 4, 5, 6];
     const daysHtml = days.map(d => {
       const cls = d === activeDay ? 'active' : (d < activeDay ? 'past' : '');
       return `<div class="swk-day ${cls}" title="${WEEK_DAY_KO[d]}요일 · ${WEEK_TOPIC[d]}">
@@ -931,7 +931,7 @@
      큐레이터 전용: 요일 파라미터 자동 입력 → 사용자 추가 요청
      → 완성된 프롬프트 + data.js 스니펫 생성
   ───────────────────────────────────────────────────────── */
-  const IMG_KEYS = { 1:'mon', 2:'tue', 3:'wed', 4:'thu', 5:'fri' };
+  const IMG_KEYS = { 1:'mon', 2:'tue', 3:'wed', 4:'thu', 5:'fri', 6:'sat' };
 
   function openStoryGenerator() {
     const drawer = document.getElementById('storyGenDrawer');
@@ -1661,8 +1661,8 @@ ${'═'.repeat(50)}
        <span>총 스토리 발견: <strong>${totalFound}</strong>회</span>`;
 
     /* 후보 선호 패턴 섹션 */
-    const DAY_NAMES_SHORT = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금' };
-    const prefHtml = [1,2,3,4,5].map(d => {
+    const DAY_NAMES_SHORT = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금', 6:'토' };
+    const prefHtml = [1,2,3,4,5,6].map(d => {
       const sessions = (loadRankingHistory()[d] || []);
       if (!sessions.length) return '';
       const summary = buildPreferenceSummary(d);
@@ -1701,11 +1701,11 @@ ${'═'.repeat(50)}
 
     const now       = new Date();
     const DAY_KR    = ['일','월','화','수','목','금','토'];
-    const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금' };
+    const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금', 6:'토' };
 
     /* 이번 주 이야기 목록 구성
        publishedDate가 있으면 사용, 없으면 "이번 주" */
-    const thisWeekItems = [1, 2, 3, 4, 5].map(d => {
+    const thisWeekItems = [1, 2, 3, 4, 5, 6].map(d => {
       const story   = getDisplayStory(d);
       /* 해당 요일 기준 날짜 추정
          평일: 이번 주  /  토·일: 다음 주 (업무주 기준) */
@@ -1797,7 +1797,7 @@ ${'═'.repeat(50)}
 
     /* 지난 이야기 섹션 (STORY_ARCHIVE 기반 — 클릭하면 본문 보기 가능) */
     if (STORY_ARCHIVE.length) {
-      const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금' };
+      const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금', 6:'토' };
       html += `<div class="sb-month-group sb-archive-group">
         <div class="sb-month-label">지난 이야기</div>`;
       STORY_ARCHIVE.forEach((week, weekIdx) => {
@@ -2602,7 +2602,7 @@ ${aiNote}STORIES[${dayNum}] = {
     body.innerHTML = `
       <!-- Day selector -->
       <div class="ed-day-tabs">
-        ${[1,2,3,4,5].map(d => {
+        ${[1,2,3,4,5,6].map(d => {
           const st  = loadStaging(d);
           const dot = st ? (st.status === 'confirmed' ? '✅' : '⏺') : '';
           return `<button class="ed-day-btn${d === day ? ' active' : ''}" data-day="${d}">
@@ -2923,7 +2923,7 @@ ${closing ? '- 맺음말: ' + closing.slice(0, 100) : ''}
     const base       = STORIES[day];
     const svgKey     = base.svgKey || day;
     const category   = storyData.primaryType || base.primaryType || '';
-    const dayNames   = { 1:'월요일', 2:'화요일', 3:'수요일', 4:'목요일', 5:'금요일' };
+    const dayNames   = { 1:'월요일', 2:'화요일', 3:'수요일', 4:'목요일', 5:'금요일', 6:'토요일' };
     const styleGuide = {
       '감동': '선 드로잉 — 크림 흰 배경(#f8f7f4), 모든 요소를 stroke 선으로만. 빛은 방사형 선으로 표현.',
       '유머': '선 드로잉 팝아트 — 흰 배경, 굵은 검정 stroke 선화 인물·사물, 선만으로 된 말풍선.',
