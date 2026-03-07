@@ -364,25 +364,35 @@ html, body { height: 100%; }
   overflow: hidden;
   width: 100%;
   margin: 0.6rem 0 1rem;
+  position: relative;
 }
 
-.sidebar-train-scroll {
-  display: flex;
-  will-change: transform;
-  animation: trainScroll 4s linear infinite;
+/* 전폭 기찻길 — 두 줄 레일 */
+.sidebar-train-track::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 5px;
+  height: 10px;
+  border-top: 2.5px solid #9a7840;
+  border-bottom: 2.5px solid #9a7840;
+  z-index: 0;
 }
 
 .sidebar-train-img {
   display: block;
-  flex-shrink: 0;
   width: calc(260px / 3);
   height: auto;
-  opacity: 0.88;
+  opacity: 0.9;
+  mix-blend-mode: multiply;
+  position: relative;
+  z-index: 1;
+  animation: trainSingle 12s linear infinite;
 }
 
-@keyframes trainScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(calc(-260px / 3)); }
+@keyframes trainSingle {
+  from { transform: translateX(260px); }
+  to   { transform: translateX(calc(-260px / 3)); }
 }
 
 /* Mobile overlay */
