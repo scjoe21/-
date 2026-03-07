@@ -360,39 +360,20 @@ html, body { height: 100%; }
   flex-shrink: 0;
 }
 
-.sidebar-train-track {
-  overflow: hidden;
+
+.sidebar-bottom-img-wrap {
   width: 100%;
   margin: 0.6rem 0 1rem;
-  position: relative;
+  text-align: center;
+  background: var(--bg-card);
 }
 
-/* 전폭 기찻길 — 두 줄 레일 */
-.sidebar-train-track::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 5px;
-  height: 10px;
-  border-top: 2.5px solid #9a7840;
-  border-bottom: 2.5px solid #9a7840;
-  z-index: 0;
-}
-
-.sidebar-train-img {
-  display: block;
-  width: calc(260px / 3);
+.sidebar-bottom-img {
+  width: 100%;
   height: auto;
-  opacity: 0.9;
+  display: block;
+  margin: 0 auto;
   mix-blend-mode: multiply;
-  position: relative;
-  z-index: 1;
-  animation: trainSingle 12s linear infinite;
-}
-
-@keyframes trainSingle {
-  from { transform: translateX(260px); }
-  to   { transform: translateX(calc(-260px / 3)); }
 }
 
 /* Mobile overlay */

@@ -407,11 +407,17 @@
 
     const story   = getDisplayStory(day);
     const now     = new Date();
-    const year    = now.getFullYear();
-    const month   = now.getMonth() + 1;
-    const date    = now.getDate();
+    const todayDow = now.getDay(); // 0=일~6=토
+    const diff = todayDow === 0 ? day
+               : todayDow === 6 ? day + 1
+               : day - todayDow;
+    const dt = new Date(now);
+    dt.setDate(now.getDate() + diff);
+    const year    = dt.getFullYear();
+    const month   = dt.getMonth() + 1;
+    const date    = dt.getDate();
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-    const dayOfWeek = dayNames[now.getDay()];
+    const dayOfWeek = dayNames[dt.getDay()];
 
     dateEl.textContent = `${year}년 ${month}월 ${date}일 · ${dayOfWeek}요일`;
 
