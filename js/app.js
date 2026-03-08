@@ -439,14 +439,21 @@
     const dateEl = document.getElementById('storyDateLine');
     if (!dateEl) return;
 
-    const story   = getDisplayStory(day);
-    const now     = new Date();
-    const todayDow = now.getDay(); // 0=일~6=토
-    const diff = todayDow === 0 ? day
-               : todayDow === 6 ? (day === 6 ? 0 : day + 1)
-               : day - todayDow;
-    const dt = new Date(now);
-    dt.setDate(now.getDate() + diff);
+    const story = getDisplayStory(day);
+    let dt;
+    if (activeArchive) {
+      const weekData = STORY_ARCHIVE[activeArchive.weekIdx];
+      dt = new Date(weekData.weekStart);
+      dt.setDate(dt.getDate() + (activeArchive.day - 1));
+    } else {
+      const now = new Date();
+      const todayDow = now.getDay(); // 0=일~6=토
+      const diff = todayDow === 0 ? day
+                 : todayDow === 6 ? (day === 6 ? 0 : day + 1)
+                 : day - todayDow;
+      dt = new Date(now);
+      dt.setDate(now.getDate() + diff);
+    }
     const year    = dt.getFullYear();
     const month   = dt.getMonth() + 1;
     const date    = dt.getDate();
