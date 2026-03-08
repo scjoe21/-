@@ -7,8 +7,8 @@
   'use strict';
 
   /* ── Constants ── */
-  const DAY_NAMES   = { 1: '월요일', 2: '화요일', 3: '수요일', 4: '목요일', 5: '금요일' };
-  const DAY_SHORT   = { 1: '월', 2: '화', 3: '수', 4: '목', 5: '금' };
+  const DAY_NAMES   = { 1: '월요일', 2: '화요일', 3: '수요일', 4: '목요일', 5: '금요일', 6: '토요일' };
+  const DAY_SHORT   = { 1: '월', 2: '화', 3: '수', 4: '목', 5: '금', 6: '토' };
   /* ── Gemini Imagen 3 스타일 프롬프트 ── */
   const IMG_STYLE = {
     loose_pen: 'Rendered as a loose gestural pen drawing: confident expressive ink strokes, sketchy editorial line work, crosshatching for shadow, spontaneous hand-drawn quality on warm cream paper.',
@@ -24,19 +24,19 @@
   const TYPE_CLASS  = { '통찰': 'insight', '유머': 'humor', '감동': 'emotion' };
   const TYPE_ICON   = { '통찰': '💡', '유머': '😄', '감동': '❤️' };
 
-  /* JS 요일 → 1(월)~5(금), 주말은 금요일로 fallback */
+  /* JS 요일 → 1(월)~6(토), 일요일은 토요일로 fallback */
   const jsDay   = new Date().getDay();
-  const todayKey = (jsDay >= 1 && jsDay <= 5) ? jsDay : 5;
+  const todayKey = (jsDay >= 1 && jsDay <= 6) ? jsDay : 6;
 
   /* 순차 게재 — 새 요일 추가 시 여기에만 추가하면 됨 */
-  const ACTIVE_DAYS = [1, 2, 3, 4, 5];
+  const ACTIVE_DAYS = [1, 2, 3, 4, 5, 6];
 
   /* 오늘 요일이 게재 중이면 오늘, 아니면 가장 최근 게재 요일 */
   const _defaultDay = ACTIVE_DAYS.includes(todayKey)
     ? todayKey
     : Math.max(...ACTIVE_DAYS.filter(d => d <= todayKey), ACTIVE_DAYS[0]);
 
-  const _hashDay = parseInt((location.hash.match(/^#day-([1-5])$/) || [])[1], 10);
+  const _hashDay = parseInt((location.hash.match(/^#day-([1-6])$/) || [])[1], 10);
   let activeDay = (ACTIVE_DAYS.includes(_hashDay)) ? _hashDay : _defaultDay;
   let activeSubmission = null; /* 현재 표시 중인 독자 제출글 */
   let activeArchive    = null; /* { weekIdx, day } or null — 아카이브 보기 상태 */
@@ -443,7 +443,7 @@
     const now     = new Date();
     const todayDow = now.getDay(); // 0=일~6=토
     const diff = todayDow === 0 ? day
-               : todayDow === 6 ? day + 1
+               : todayDow === 6 ? (day === 6 ? 0 : day + 1)
                : day - todayDow;
     const dt = new Date(now);
     dt.setDate(now.getDate() + diff);
@@ -463,14 +463,14 @@
     renderWeekStrip(day);
   }
 
-  const WEEK_DAY_KO  = ['', '월', '화', '수', '목', '금'];
-  const WEEK_TOPIC   = { 1: '사랑', 2: '역사·문학', 3: '철학·심리', 4: '과학·문화', 5: '경제·정치' };
+  const WEEK_DAY_KO  = ['', '월', '화', '수', '목', '금', '토'];
+  const WEEK_TOPIC   = { 1: '사랑', 2: '역사·문학', 3: '철학·심리', 4: '과학·문화', 5: '경제·정치', 6: '에세이·일상' };
 
   function renderWeekStrip(activeDay) {
     const el = document.getElementById('storyWeekStrip');
     if (!el) return;
 
-    const days = [1, 2, 3, 4, 5];
+    const days = [1, 2, 3, 4, 5, 6];
     const daysHtml = days.map(d => {
       const cls = d === activeDay ? 'active' : (d < activeDay ? 'past' : '');
       return `<div class="swk-day ${cls}" title="${WEEK_DAY_KO[d]}요일 · ${WEEK_TOPIC[d]}">
@@ -1735,19 +1735,19 @@ ${'═'.repeat(50)}
 
     const now       = new Date();
     const DAY_KR    = ['일','월','화','수','목','금','토'];
-    const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금' };
+    const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금', 6:'토' };
 
     /* 이번 주 이야기 목록 구성
        publishedDate가 있으면 사용, 없으면 "이번 주" */
-    const thisWeekItems = [1, 2, 3, 4, 5].map(d => {
+    const thisWeekItems = [1, 2, 3, 4, 5, 6].map(d => {
       const story   = getDisplayStory(d);
       /* 해당 요일 기준 날짜 추정
-         평일: 이번 주  /  토·일: 다음 주 (업무주 기준) */
+         평일+토: 이번 주  /  일: 이번 주 기준 */
       const todayDow  = now.getDay(); // 0=일~6=토
-      const targetDow = d;            // 1=월~5=금
-      const diff = todayDow === 0 ? targetDow          // 일 → 다음 월요일 +1
-                 : todayDow === 6 ? targetDow + 1      // 토 → 다음 월요일 +2
-                 : targetDow - todayDow;               // 평일 → 이번 주
+      const targetDow = d;            // 1=월~6=토
+      const diff = todayDow === 0 ? targetDow                              // 일 → 이번 주 해당 요일
+                 : todayDow === 6 ? (targetDow === 6 ? 0 : targetDow + 1) // 토 → 오늘(토=0), 나머지 다음 주
+                 : targetDow - todayDow;                                   // 평일 → 이번 주
       const dt        = new Date(now);
       dt.setDate(now.getDate() + diff);
       return {
@@ -1831,7 +1831,7 @@ ${'═'.repeat(50)}
 
     /* 지난 이야기 섹션 (STORY_ARCHIVE 기반 — 클릭하면 본문 보기 가능) */
     if (STORY_ARCHIVE.length) {
-      const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금' };
+      const WEEKDAY_LABEL = { 1:'월', 2:'화', 3:'수', 4:'목', 5:'금', 6:'토' };
       html += `<div class="sb-month-group sb-archive-group">
         <div class="sb-month-label">지난 이야기</div>`;
       STORY_ARCHIVE.forEach((week, weekIdx) => {
@@ -3219,7 +3219,7 @@ ${styleGuide[category] || '이야기의 감정과 주제를 가장 잘 전달하
 
     /* Hash-based navigation (back/forward, direct link) */
     window.addEventListener('hashchange', () => {
-      const m = location.hash.match(/^#day-([1-5])$/);
+      const m = location.hash.match(/^#day-([1-6])$/);
       if (m) setActiveDay(parseInt(m[1], 10));
     });
 

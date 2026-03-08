@@ -10,6 +10,7 @@
   --color-day-3: #3949ab;   /* 수 · 철학/심리  — indigo     */
   --color-day-4: #00897b;   /* 목 · 과학/문화  — teal       */
   --color-day-5: #e65100;   /* 금 · 경제/정치  — deep orange*/
+  --color-day-6: #6a1b9a;   /* 토 · 에세이/일상 — purple     */
 
   --color-active: var(--color-day-1);
 
@@ -49,6 +50,7 @@ body.day-2 { --color-active: var(--color-day-2); }
 body.day-3 { --color-active: var(--color-day-3); }
 body.day-4 { --color-active: var(--color-day-4); }
 body.day-5 { --color-active: var(--color-day-5); }
+body.day-6 { --color-active: var(--color-day-6); }
 
 /* ─── Season strip (하단 띠, JS로 렌더링) ─────────────── */
 .season-strip {
