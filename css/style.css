@@ -369,7 +369,7 @@ html, body { height: 100%; }
 }
 
 .sidebar-bottom-img {
-  width: 75%;
+  width: 53%;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -1987,6 +1987,9 @@ html, body { height: 100%; }
   font-size: 0.8rem;
   color: var(--text-muted, #9ca3af);
   min-width: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 .sub-toggle-btn {
   padding: 0.28rem 0.8rem;

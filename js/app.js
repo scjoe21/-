@@ -95,6 +95,36 @@
     });
   }
 
+  /* 1주차→2주차 전환 시 staging image 경로 자동 마이그레이션 */
+  (function migrateStagingImagePaths() {
+    const MIG_KEY = 'story-staging-image-mig-v1';
+    if (localStorage.getItem(MIG_KEY)) return;
+    const MAP = {
+      'images/story-mon.png': 'images/story-semmelweis.png',
+      'images/story-tue.png': 'images/story-dostoevsky.png',
+      'images/story-wed.png': 'images/story-epictetus.png',
+      'images/story-thu.png': 'images/story-pale-blue-dot.png',
+      'images/story-fri.png': 'images/story-feynman.png',
+    };
+    try {
+      const all = JSON.parse(localStorage.getItem(STAGING_KEY)) || {};
+      let changed = false;
+      Object.keys(all).forEach(day => {
+        const s = all[day];
+        if (!s || !s.story) return;
+        const archiveWeek = STORY_ARCHIVE[0];
+        if (!archiveWeek) return;
+        const archiveStory = archiveWeek.stories[day];
+        if (archiveStory && s.story.title === archiveStory.title && MAP.hasOwnProperty(s.story.image)) {
+          s.story.image = MAP[s.story.image];
+          changed = true;
+        }
+      });
+      if (changed) localStorage.setItem(STAGING_KEY, JSON.stringify(all));
+    } catch (e) { /* ignore */ }
+    localStorage.setItem(MIG_KEY, '1');
+  })();
+
   function loadAllStaging() {
     try { return JSON.parse(localStorage.getItem(STAGING_KEY)) || {}; } catch { return {}; }
   }
@@ -196,6 +226,10 @@
     const area = document.getElementById('illustrationArea');
     if (!area) return;
     const story = getDisplayStory(day);
+    if (!story.image) {
+      area.innerHTML = ILLUSTRATIONS[story.svgKey] || '';
+      return;
+    }
     const img   = document.createElement('img');
     img.alt     = story.title + ' 일러스트';
     img.src     = story.image;
@@ -2095,7 +2129,7 @@ ${'═'.repeat(50)}
         `────────────────────────────────────`,
       ].join('\n');
 
-      const subject = encodeURIComponent(`[Humanzest] 독자 이야기 제출: ${title} — ${selectedCat}`);
+      const subject = encodeURIComponent(`[HumanZest] 독자 이야기 제출: ${title} — ${selectedCat}`);
       const bodyEnc = encodeURIComponent(mailBody);
       const mailto  = `mailto:${CURATOR_EMAIL}?subject=${subject}&body=${bodyEnc}`;
 
@@ -3228,8 +3262,8 @@ ${styleGuide[category] || '이야기의 감정과 주제를 가장 잘 전달하
       const btn = document.getElementById('langToggle');
       if (!btn) return;
       const html = document.documentElement;
-      const TITLE_KO = 'Humanzest — 통찰·유머·감동';
-      const TITLE_EN = 'Humanzest — Insight·Humor·Emotion';
+      const TITLE_KO = 'HumanZest — 통찰·유머·감동';
+      const TITLE_EN = 'HumanZest — Insight·Humor·Emotion';
       function applyLang(lang) {
         html.lang = lang;
         document.title = lang === 'en' ? TITLE_EN : TITLE_KO;
