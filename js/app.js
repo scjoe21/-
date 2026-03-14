@@ -480,7 +480,8 @@
     const days = [1, 2, 3, 4, 5, 6];
     const daysHtml = days.map(d => {
       const cls = d === activeDay ? 'active' : (d < activeDay ? 'past' : '');
-      return `<div class="swk-day ${cls}" title="${WEEK_DAY_KO[d]}요일 · ${WEEK_TOPIC[d]}">
+      const isActive = ACTIVE_DAYS.includes(d);
+      return `<div class="swk-day ${cls}${isActive ? ' swk-clickable' : ''}" title="${WEEK_DAY_KO[d]}요일 · ${WEEK_TOPIC[d]}"${isActive ? ` data-day="${d}" tabindex="0" role="button"` : ''}>
         <div class="swk-dot"></div>
         <span class="swk-label">${WEEK_DAY_KO[d]}</span>
       </div>`;
@@ -490,6 +491,12 @@
       <div class="swk-days">${daysHtml}</div>
       <div class="swk-sep"></div>
       <span class="swk-badge">하루 한 편</span>`;
+
+    el.querySelectorAll('.swk-day[data-day]').forEach(item => {
+      const go = () => setActiveDay(parseInt(item.dataset.day, 10));
+      item.addEventListener('click', go);
+      item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
   }
 
   /* ── RENDER: Curator Note + Q&A ── */

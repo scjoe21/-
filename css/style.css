@@ -3049,6 +3049,16 @@ html, body { height: 100%; }
 .swk-day.past .swk-dot {
   background: color-mix(in srgb, var(--color-active) 35%, var(--border));
 }
+.swk-day.swk-clickable {
+  cursor: pointer;
+}
+.swk-day.swk-clickable:hover .swk-dot {
+  background: color-mix(in srgb, var(--color-active) 60%, var(--border));
+  transform: scale(1.2);
+}
+.swk-day.swk-clickable:hover .swk-label {
+  color: var(--color-active);
+}
 
 .swk-label {
   font-size: 0.62rem;
