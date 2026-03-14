@@ -440,25 +440,33 @@
     if (!dateEl) return;
 
     const story = getDisplayStory(day);
-    let dt;
-    if (activeArchive) {
-      const weekData = STORY_ARCHIVE[activeArchive.weekIdx];
-      dt = new Date(weekData.weekStart);
-      dt.setDate(dt.getDate() + (activeArchive.day - 1));
-    } else {
-      const now = new Date();
-      const todayDow = now.getDay(); // 0=일~6=토
-      const diff = todayDow === 0 ? day
-                 : todayDow === 6 ? (day === 6 ? 0 : day + 1)
-                 : day - todayDow;
-      dt = new Date(now);
-      dt.setDate(now.getDate() + diff);
-    }
-    const year    = dt.getFullYear();
-    const month   = dt.getMonth() + 1;
-    const date    = dt.getDate();
+    let year, month, date, dayOfWeek;
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-    const dayOfWeek = dayNames[dt.getDay()];
+
+    /* publishedDate가 'YYYY년 M월 D일' 형식이면 그대로 사용 */
+    const pdMatch = (story.publishedDate || '').match(/^(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일$/);
+    if (!activeArchive && pdMatch) {
+      const dt = new Date(parseInt(pdMatch[1]), parseInt(pdMatch[2]) - 1, parseInt(pdMatch[3]));
+      year = dt.getFullYear(); month = dt.getMonth() + 1; date = dt.getDate();
+      dayOfWeek = dayNames[dt.getDay()];
+    } else {
+      let dt;
+      if (activeArchive) {
+        const weekData = STORY_ARCHIVE[activeArchive.weekIdx];
+        dt = new Date(weekData.weekStart);
+        dt.setDate(dt.getDate() + (activeArchive.day - 1));
+      } else {
+        const now = new Date();
+        const todayDow = now.getDay(); // 0=일~6=토
+        const diff = todayDow === 0 ? day
+                   : todayDow === 6 ? (day === 6 ? 0 : day + 1)
+                   : day - todayDow;
+        dt = new Date(now);
+        dt.setDate(now.getDate() + diff);
+      }
+      year = dt.getFullYear(); month = dt.getMonth() + 1; date = dt.getDate();
+      dayOfWeek = dayNames[dt.getDay()];
+    }
 
     dateEl.textContent = `${year}년 ${month}월 ${date}일 · ${dayOfWeek}요일`;
 
