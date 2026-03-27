@@ -125,6 +125,25 @@
     localStorage.setItem(MIG_KEY, '1');
   })();
 
+  /* 주차 전환 시 스테이징 자동 만료
+     STORIES[day].title이 staging[day].story.title과 다르면 → 이전 주 스테이징 → 삭제 */
+  (function clearStaleStaging() {
+    try {
+      const all = JSON.parse(localStorage.getItem(STAGING_KEY)) || {};
+      let changed = false;
+      Object.keys(all).forEach(day => {
+        const s = all[day];
+        if (!s || !s.story || !s.story.title) return;
+        const current = STORIES[day];
+        if (current && s.story.title !== current.title) {
+          delete all[day];
+          changed = true;
+        }
+      });
+      if (changed) localStorage.setItem(STAGING_KEY, JSON.stringify(all));
+    } catch (e) { /* ignore */ }
+  })();
+
   function loadAllStaging() {
     try { return JSON.parse(localStorage.getItem(STAGING_KEY)) || {}; } catch { return {}; }
   }
@@ -516,7 +535,7 @@
     const qna   = story.qna || {};
 
     const ornament = document.getElementById('storyOrnament');
-    if (!qna.question) {
+    if (!qna.question || day === 6) {
       el.innerHTML = '';
       if (ornament) ornament.style.display = 'none';
       return;
