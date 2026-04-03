@@ -824,7 +824,7 @@ const STORIES = {
     category: '역사·감동',
     primaryType: '감동',
     types: ['감동', '통찰'],
-    image: 'images/넬슨 만델라의 정원.png',
+    image: null,
     svgKey: null,
     body: [
       '만델라는 1964년 종신형을 선고받았다. 로벤섬 교도소. 남아프리카공화국의 아파르트헤이트 체제가 그를 가둔 곳이었다.',
@@ -857,7 +857,6 @@ const STORIES = {
       answer: '만델라의 텃밭은 저항의 상징이 아니었습니다. 그것은 그냥 텃밭이었습니다. 그러나 씨앗을 심고 기다리는 행위가 그를 지켰습니다. 자유는 때로 거창한 선언이 아니라, 매일 물을 주는 것입니다.'
     },
     publishedDate: '2026년 3월 30일',
-    imagePrompt: 'A dignified man in prison clothing tending a small vegetable garden in the corner of a prison courtyard, kneeling to tend plants, sunlight falling on the garden, stone walls in background, expression of quiet focus and purpose, line drawing watercolor style'
   },
 
   /* ═══ 화요일 — 철학·역사 (PRIMARY: 통찰) ═══ */
@@ -866,7 +865,7 @@ const STORIES = {
     category: '철학·역사',
     primaryType: '통찰',
     types: ['통찰', '감동'],
-    image: 'images/니체의 포옹.png',
+    image: 'images/니체의 포옹.webp',
     svgKey: null,
     body: [
       '1889년 1월 3일, 이탈리아 토리노. 프리드리히 니체는 호텔 방에서 나와 광장으로 걸어 나왔다.',
@@ -899,7 +898,6 @@ const STORIES = {
       answer: '니체의 철학은 일관됐습니다. 그러나 그 순간 그의 몸은 달랐습니다. 우리가 쓰는 것과 우리가 사는 것 사이의 거리. 그 거리가 때로 가장 솔직한 자화상입니다.'
     },
     publishedDate: '2026년 3월 31일',
-    imagePrompt: 'A mustachioed 19th century man running across a cobblestone European plaza toward a horse, arms open, the horse standing still while a coachman watches in surprise, neoclassical buildings in background, winter light, line drawing watercolor style'
   },
 
   /* ═══ 수요일 — 역사·유머 (PRIMARY: 유머) ═══ */
@@ -908,7 +906,7 @@ const STORIES = {
     category: '역사·유머',
     primaryType: '유머',
     types: ['유머', '통찰'],
-    image: 'images/처칠의 잠.png',
+    image: null,
     svgKey: null,
     body: [
       '윈스턴 처칠은 매일 낮잠을 잤다.',
@@ -941,7 +939,6 @@ const STORIES = {
       answer: '처칠은 낮잠이 사치가 아니라 전략이라고 믿었습니다. 가장 바쁜 시간에 쉬는 것이 더 오래 갈 수 있게 해줍니다. 회복하지 않는 것은 더 빠른 길이 아니라 더 짧은 길입니다.'
     },
     publishedDate: '2026년 4월 1일',
-    imagePrompt: 'A stout older man in a 1940s British suit sleeping soundly in a bed in the middle of the day, beside a bedside table with documents and a telephone, afternoon light through curtains, expression of complete peaceful rest, line drawing watercolor style'
   },
 
   /* ═══ 목요일 — 과학·통찰 (PRIMARY: 통찰) ═══ */
@@ -950,7 +947,7 @@ const STORIES = {
     category: '과학·통찰',
     primaryType: '통찰',
     types: ['통찰', '유머'],
-    image: 'images/다윈의 지렁이.png',
+    image: null,
     svgKey: null,
     body: [
       '찰스 다윈의 마지막 책 주제는 지렁이였다.',
@@ -983,7 +980,6 @@ const STORIES = {
       answer: '다윈은 지렁이가 보잘것없다고 생각하지 않았습니다. 40년을 연구한 결과, 지렁이가 문명을 보존했다는 것을 밝혔습니다. 우리가 무시하는 것들이 사실 가장 묵묵히 세상을 유지하고 있는 것들일 수 있습니다.'
     },
     publishedDate: '2026년 4월 2일',
-    imagePrompt: 'An elderly Victorian scientist sitting at a desk holding a magnifying glass and examining an earthworm closely, notebooks and specimen jars around him, bassoon visible in the corner, afternoon light through a study window, expression of intent fascination, line drawing watercolor style'
   },
 
   /* ═══ 금요일 — 문학·감동 (PRIMARY: 감동) ═══ */
@@ -992,7 +988,7 @@ const STORIES = {
     category: '문학·감동',
     primaryType: '감동',
     types: ['감동', '통찰'],
-    image: 'images/베케트의 친절.png',
+    image: null,
     svgKey: null,
     body: [
       '사뮈엘 베케트는 파리에서 혼자 살았다. 《고도를 기다리며》를 쓴 사람이었다. 그는 글을 마치면 카페에 가거나 혼자 걸었다.',
@@ -1025,7 +1021,6 @@ const STORIES = {
       answer: '베케트는 이유를 설명하지 않았습니다. "길이 같아서요"라고만 했습니다. 가장 순수한 친절은 설명을 필요로 하지 않습니다. 그냥 온 것, 그냥 있어준 것. 그것이 전부일 때가 있습니다.'
     },
     publishedDate: '2026년 4월 3일',
-    imagePrompt: 'A tall thin man in a long coat and scarf walking beside a small boy on a quiet Paris street in early morning, both looking ahead without speaking, apartment buildings and bare trees visible, muted dawn light, expression of quiet companionship, line drawing watercolor style'
   },
 
   /* ═══ 토요일 — 에세이·감동 (PRIMARY: 감동) ═══ */
@@ -1034,7 +1029,7 @@ const STORIES = {
     category: '에세이·일상',
     primaryType: '감동',
     types: ['감동', '통찰'],
-    image: 'images/0번.png',
+    image: 'images/0번.webp',
     svgKey: null,
     body: [
       '‘선하다는 게 도대체 무엇입니까?’라는 질문에 맹자는 ‘선하다는 것은 가까이하고 싶다는 뜻이다’라고 답했다. 정말 와닿는 말이 아닐 수 없다. 가까이하고 싶은 사람이 있고, 멀리 떨어져 있고 싶은 사람도 있다.',
@@ -1087,7 +1082,7 @@ const STORY_ARCHIVE = [
         category: '의학·역사',
         primaryType: '감동',
         types: ['감동', '통찰'],
-        image: 'images/story-semmelweis.png',
+        image: 'images/story-semmelweis.webp',
         svgKey: 6,
         body: [
           '1847년 봄, 빈 종합병원. 이그나즈 제멜바이스는 숫자를 들여다보고 있었다. 같은 건물 안의 두 산부인과 병동이었다. 1병동의 산모 사망률은 10~35%였다. 2병동은 4%였다.',
@@ -1127,7 +1122,7 @@ const STORY_ARCHIVE = [
         category: '역사·문학',
         primaryType: '통찰',
         types: ['통찰', '감동'],
-        image: 'images/story-dostoevsky.png',
+        image: null,
         svgKey: null,
         body: [
           '1849년 12월 22일, 상트페테르부르크. 영하의 새벽, 세메노프스키 광장.',
@@ -1166,7 +1161,7 @@ const STORY_ARCHIVE = [
         category: '철학·심리',
         primaryType: '감동',
         types: ['감동', '통찰'],
-        image: 'images/story-epictetus.png',
+        image: null,
         svgKey: null,
         body: [
           '로마 시대. 한 주인에게 절름발이 노예가 있었다. 에픽테토스. 주인은 재산이 많았지만 행복하지 못했다. 노예는 가진 것이 없었지만 마음이 평온했다.',
@@ -1204,7 +1199,7 @@ const STORY_ARCHIVE = [
         category: '과학·문화',
         primaryType: '감동',
         types: ['감동', '통찰'],
-        image: 'images/story-pale-blue-dot.png',
+        image: 'images/story-pale-blue-dot.webp',
         svgKey: 4,
         body: [
           '보이저 1호가 지구를 떠났다. 해는 1977년 가을이었다. 탐사 목적은 목성과 토성이었다. 임무가 끝나면 태양계 밖으로 나가게 되어 있었다. 더 이상 돌아볼 이유가 없었다.',
@@ -1247,7 +1242,7 @@ const STORY_ARCHIVE = [
         category: '과학·정치',
         primaryType: '유머',
         types: ['유머', '통찰'],
-        image: 'images/story-feynman.png',
+        image: 'images/story-feynman.webp',
         svgKey: 5,
         body: [
           '1986년 1월 28일, 챌린저 우주왕복선이 발사 73초 만에 공중에서 분해됐다. 승무원 7명이 전원 사망했다. 미국 역사상 가장 충격적인 우주 사고였다.',
@@ -1287,7 +1282,7 @@ const STORY_ARCHIVE = [
         category: '에세이·일상',
         primaryType: '유머',
         types: ['유머', '감동'],
-        image: 'images/story-sat-w1.png',
+        image: 'images/story-sat-w1.webp',
         svgKey: null,
         body: [
           '어느 날 텔레비전 뒤에 처음 보는 장난감이 여러 개 있었다. 못 보던 장난감에 놀란 가족이 모두 나서 조사한 결과, 남동생이 엄마 돈을 훔쳐 산 걸로 결론났다. 당연한 수순대로 동생은 따끔히 혼이 났다. 그 많은 장난감을 살려면 나도 경험 못한 꽤 큰 돈이 필요했을 텐데, 그에 비하면 덜 혼난 거였다.',
@@ -1325,7 +1320,7 @@ const STORY_ARCHIVE = [
         category: '사랑·감동',
         primaryType: '감동',
         types: ['감동', '통찰'],
-        image: 'images/story-mon.png',
+        image: 'images/story-mon.webp',
         svgKey: null,
         body: [
           '1887년 4월 5일 아침. 앨라배마 주 터스컴비아의 작은 우물가. 앤 설리번이 손잡이를 돌렸다. 물이 흘러내렸다.',
@@ -1357,14 +1352,13 @@ const STORY_ARCHIVE = [
           answer: '헬렌에게 "water"는 단순한 단어가 아니었습니다. 존재와 이름이 연결되는 순간이었습니다. 우리도 매일 새로운 언어를 배웁니다 — 슬픔에 이름을 붙이면 덜 무섭고, 기쁨에 이름을 붙이면 더 오래 남습니다. 이름 짓기는 세상을 여는 일입니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'A young blind and deaf girl of about 7, her face turning toward the sky in sudden wonder, one hand under a water pump, the other held by a young teacher writing on her palm, Alabama farm 1887, morning light, moment of awakening, line drawing watercolor style'
       },
       2: {
         title: '세르반테스의 감옥',
         category: '문학·역사',
         primaryType: '통찰',
         types: ['통찰', '감동'],
-        image: 'images/story-tue.png',
+        image: 'images/story-tue.webp',
         svgKey: null,
         body: [
           '미겔 데 세르반테스는 스물네 살에 처음 감옥에 갔다. 싸움에 연루된 혐의였다. 그러나 진짜 감옥은 그보다 훨씬 더 길었다.',
@@ -1396,14 +1390,13 @@ const STORY_ARCHIVE = [
           answer: '세르반테스의 감옥은 그를 멈추게 했지만, 동시에 이야기를 만들게 했습니다. 막힌 시간이 반드시 낭비는 아닙니다. 다만 그 시간 안에서 무엇을 구상하느냐는 각자의 몫입니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'A middle-aged man with a withered left arm writing by candlelight in a Spanish prison cell, straw on the floor, barred window letting in evening light, his face calm and focused, 16th century Spain, line drawing watercolor style'
       },
       3: {
         title: '융과 프로이트의 결별',
         category: '철학·심리',
         primaryType: '통찰',
         types: ['통찰', '감동'],
-        image: 'images/story-wed.png',
+        image: null,
         svgKey: null,
         body: [
           '1907년 2월, 카를 구스타프 융이 빈으로 프로이트를 찾아갔다. 두 사람은 처음 만나자마자 이야기를 시작했다. 13시간 동안 멈추지 않았다.',
@@ -1436,14 +1429,13 @@ const STORY_ARCHIVE = [
           answer: '융은 프로이트에게 실망한 뒤, 혼자만의 방향으로 갔습니다. 집단무의식, 원형 — 프로이트가 결코 가지 않았을 영역으로. 실망이 독립을 만들 때가 있습니다. 의존이 깨지면서 자신만의 목소리가 생기는 것입니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'Two men in early 20th century European suits sitting across a table covered with books and papers, one older with a beard looking away, one younger staring directly, Vienna study 1912, warm lamp light, tension in body language, line drawing watercolor style'
       },
       4: {
         title: '허블의 밤',
         category: '과학·문화',
         primaryType: '통찰',
         types: ['통찰', '감동'],
-        image: 'images/story-thu.png',
+        image: 'images/story-thu.webp',
         svgKey: null,
         body: [
           '1923년 10월, 캘리포니아 윌슨산 정상. 에드윈 허블은 세계에서 가장 큰 망원경 앞에 앉아 있었다. 100인치 후커 망원경. 그날 밤 그는 안드로메다 성운을 촬영했다.',
@@ -1475,14 +1467,13 @@ const STORY_ARCHIVE = [
           answer: '허블의 발견이 충격적인 것은 숫자가 아닙니다. 어제까지 진실이었던 것이 오늘 지도를 다시 그려야 할 이유가 됐다는 것입니다. 우리의 지도도 언제든 다시 그려질 수 있습니다. 그것이 두렵기보다 흥미로운 일일 수도 있습니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'An astronomer at a massive telescope eyepiece on a mountaintop observatory at night, star-filled sky visible through the dome opening, the man writing "VAR!" on a glass photographic plate, expression of quiet awe, 1923 California, line drawing watercolor style'
       },
       5: {
         title: '김홍도의 마당',
         category: '예술·한국',
         primaryType: '유머',
         types: ['유머', '통찰'],
-        image: 'images/story-fri.png',
+        image: 'images/story-fri.webp',
         svgKey: null,
         body: [
           '조선 영조 21년인 1745년, 경기도 어딘가에서 화가 한 명이 태어났다. 이름은 홍도, 호는 단원. 어릴 때부터 그림이 남달랐다.',
@@ -1515,14 +1506,13 @@ const STORY_ARCHIVE = [
           answer: '김홍도는 왕의 행사를 그리는 일을 하면서도, 마당의 씨름판을 그렸습니다. 역사에 남을 거라고 생각해서가 아니라 그것이 살아있는 장면이었기 때문에. 우리도 매일 마당에 있습니다. 무엇을 볼 것인지는 우리가 선택합니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'Joseon dynasty Korea, a lively scene like Kim Hongdo\'s genre painting — villagers watching a ssireum wrestling match, spectators with varied expressions of excitement and laughter, traditional hanbok clothing, ink brush and watercolor style, warm earthy tones, 18th century Korean folk scene'
       },
       6: {
         title: '작아지다',
         category: '에세이·일상',
         primaryType: '유머',
         types: ['유머', '감동', '통찰'],
-        image: 'images/story-sat.png',
+        image: 'images/story-sat.webp',
         svgKey: null,
         body: [
           '중학교 때 학교 가는 버스를 탔는데, 모든 좌석이 꽉 차있고 혼자 서 있게 됐다. 앉아 있는 사람들이 \'조금만 일찍 타지 그랬니?\'라고 놀리는 것 같은 기분이 들었다.',
@@ -1571,7 +1561,7 @@ const STORY_ARCHIVE = [
         category: '사랑·감동',
         primaryType: '감동',
         types: ['감동', '통찰'],
-        image: 'images/story-keats.png',
+        image: 'images/story-keats.webp',
         svgKey: null,
         body: [
           '1820년 2월, 런던. 존 키츠는 잠에서 깨다가 기침을 했다. 손수건에 붉은 얼룩이 생겼다. 그는 의대를 다닌 사람이었다. 한눈에 알아봤다. 폐에서 나온 피. 그는 스물네 살이었다.',
@@ -1604,14 +1594,13 @@ const STORY_ARCHIVE = [
           answer: '키츠는 자신의 시가 남지 않을 것이라 믿었습니다. 그러나 그것이 그를 멈추지 않았습니다. 남는다는 확신이 없어도 쓸 수 있다는 것. 사라진다고 생각하고 한 것이 오히려 오래 남을 때가 있습니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'A young pale man lying in a small Roman room near a window overlooking Spanish Steps, candlelight, writing a letter with a quill pen, expression of quiet longing and pain, early 19th century, line drawing watercolor style'
       },
       2: {
         title: '프루스트의 마들렌',
         category: '문학·역사',
         primaryType: '통찰',
         types: ['통찰', '감동'],
-        image: 'images/story-proust.png',
+        image: null,
         svgKey: null,
         body: [
           '1909년 겨울, 파리. 마르셀 프루스트는 홍차 한 잔을 받았다. 어머니가 내온 것이었다. 마들렌 한 조각이 함께 왔다. 조개 모양의 작은 케이크.',
@@ -1643,14 +1632,13 @@ const STORY_ARCHIVE = [
           answer: '프루스트가 발견한 것은 시간을 되찾는 방법이 의지가 아니라는 것이었습니다. 억지로 기억하려 해도 생각만 떠오릅니다. 그러나 감각은 그 시절의 몸을 그대로 데려옵니다. 지금 당신의 마들렌은 무엇입니까.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'A middle-aged man in early 20th century Parisian apartment, cork-lined walls, holding a small shell-shaped madeleine cake over a cup of tea, eyes closed in sudden reverie, warm lamplight, expression of overwhelmed memory, line drawing watercolor style'
       },
       3: {
         title: '윌리엄 제임스의 일기',
         category: '철학·심리',
         primaryType: '통찰',
         types: ['통찰', '감동'],
-        image: 'images/story-james.png',
+        image: null,
         svgKey: null,
         body: [
           '1870년 4월, 보스턴. 윌리엄 제임스는 스물여덟 살이었다. 하버드 의대를 졸업했고, 독일에서 생리학을 공부했고, 다윈을 읽었고, 헬름홀츠를 읽었다. 그리고 완전히 무너져 있었다.',
@@ -1683,14 +1671,13 @@ const STORY_ARCHIVE = [
           answer: '제임스의 일기는 철학이 아니라 처방이었습니다. 우울한 스물여덟이 자신에게 쓴 처방. 믿어보기로 하는 것이 때로 유일한 출구입니다. 행동이 믿음을 기다리지 않아도 될 때, 믿음이 행동을 따라옵니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'A young man in 19th century Boston sitting at a writing desk, open journal before him, pen in hand, expression of quiet resolve emerging from exhaustion, warm morning light through a window, line drawing watercolor style'
       },
       4: {
         title: '보어와 아인슈타인의 논쟁',
         category: '과학·문화',
         primaryType: '통찰',
         types: ['통찰', '유머'],
-        image: 'images/story-bohr.png',
+        image: null,
         svgKey: null,
         body: [
           '1927년 10월, 브뤼셀. 솔베이 회의장. 세계 물리학자 29명이 모였다. 아인슈타인도 있었다. 보어도 있었다. 그 자리에서 논쟁이 시작됐고, 30년이 지나도 끝나지 않았다.',
@@ -1723,14 +1710,13 @@ const STORY_ARCHIVE = [
           answer: '아인슈타인과 보어의 논쟁이 30년 동안 생산적이었던 것은 둘 다 틀릴 수 있다는 것을 전제했기 때문입니다. 아인슈타인은 결국 틀렸지만, 그 덕분에 보어의 이론은 더 정밀해졌습니다. 가장 좋은 반론은 우리를 더 선명하게 만들어줍니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'Two middle-aged men in early 20th century European suits in animated discussion at a conference table, one gesturing emphatically the other listening intently with slight smile, 1927 Brussels, chalkboard with physics equations in background, line drawing watercolor style'
       },
       5: {
         title: '오스카 와일드의 마지막 말',
         category: '예술·문화',
         primaryType: '유머',
         types: ['유머', '감동'],
-        image: 'images/story-wilde.png',
+        image: null,
         svgKey: null,
         body: [
           '1895년, 런던. 오스카 와일드는 잉글랜드에서 가장 유명한 작가였다. 〈진지함의 중요성〉이 무대에 오르고 있었다. 〈이상적인 남편〉도 마찬가지였다. 두 편이 동시에 웨스트엔드에서 공연 중이었다. 객석은 매일 찼다.',
@@ -1763,14 +1749,13 @@ const STORY_ARCHIVE = [
           answer: '와일드는 감옥에서도, 이름을 바꾸고 파리에서 가난하게 살 때도 재치를 잃지 않았습니다. 그것이 그의 남은 존엄이었습니다. 가장 자신다운 것이 가장 마지막까지 남습니다. 그것이 무엇인지 아는 사람은 어떤 상황에서도 완전히 무너지지 않습니다.'
         },
         publishedDate: '2026년 3월',
-        imagePrompt: 'A heavyset middle-aged man in worn 1900s clothing lying in a small Parisian hotel bed, faded floral wallpaper visible behind him, a friend seated nearby, expression simultaneously weary and wry, late autumn light through a small window, line drawing watercolor style'
       },
       6: {
         title: '긁기 자격증',
         category: '에세이·일상',
         primaryType: '유머',
         types: ['유머', '감동'],
-        image: 'images/story-sat-w3.png',
+        image: 'images/story-sat-w3.webp',
         svgKey: null,
         body: [
           '며칠 전에 막내가 긁기자격증을 할머니에게 발급해 주었다.',
@@ -1814,7 +1799,7 @@ const STORY_ARCHIVE = [
     category: '문학·역사',
     primaryType: '통찰',
     types: ['통찰', '감동'],
-    image: 'images/제인 오스틴의 by a lady.png',
+    image: 'images/제인 오스틴의 by a lady.webp',
     svgKey: null,
     body: [
       '1811년 런던. 서점에 새 소설이 들어왔다. 《이성과 감성》. 저자란에는 이름이 없었다. "By a Lady(한 숙녀가 지음)"라고만 적혀 있었다.',
@@ -1845,7 +1830,6 @@ const STORY_ARCHIVE = [
       answer: '오스틴은 이름을 포기함으로써 작품을 남겼습니다. 때로 인정받는 방법은 자신을 숨기는 것입니다. 그러나 결국 남는 것은 작품이고, 작품이 이름을 되찾아줍니다.'
     },
     publishedDate: '2026년 3월 23일',
-    imagePrompt: 'A young woman in early 19th century English dress writing at a small table in a corner of a drawing room, papers tucked nearby, another woman entering through a door in background, expression of quiet concentration, line drawing watercolor style'
   },
 
   /* ═══ 화요일 — 문학·역사 (PRIMARY: 감동) ═══ */
@@ -1854,7 +1838,7 @@ const STORY_ARCHIVE = [
     category: '문학·역사',
     primaryType: '감동',
     types: ['감동', '통찰'],
-    image: 'images/가르시아 마르케스의 첫문장.png',
+    image: null,
     svgKey: null,
     body: [
       '1965년 어느 여름날, 멕시코시티. 가브리엘 가르시아 마르케스는 가족과 함께 아카풀코로 휴가를 떠나고 있었다. 차를 몰고 있었다. 아내 메르세데스와 두 아들이 뒤에 타고 있었다.',
@@ -1887,7 +1871,6 @@ const STORY_ARCHIVE = [
       answer: '《백년의 고독》은 가르시아 마르케스 혼자 쓴 것이 아니었습니다. 메르세데스가 없었다면 그 18개월은 불가능했습니다. 위대한 창작 뒤에는 항상 그 창작을 지키기 위해 다른 무언가를 포기한 사람이 있습니다.'
     },
     publishedDate: '2026년 3월 24일',
-    imagePrompt: 'A man in 1960s Latin America at a typewriter in a small cluttered study surrounded by manuscript pages, intense focused expression, outside the window a woman and children visible, warm lamplight, line drawing watercolor style'
   },
 
   /* ═══ 수요일 — 예술·감동 (PRIMARY: 감동) ═══ */
@@ -1896,7 +1879,7 @@ const STORY_ARCHIVE = [
     category: '예술·감동',
     primaryType: '감동',
     types: ['감동', '통찰'],
-    image: 'images/프리다 칼로의 천장 거울.png',
+    image: 'images/프리다 칼로의 천장 거울.webp',
     svgKey: null,
     body: [
       '1925년 9월 17일, 멕시코시티. 열여덟 살의 프리다 칼로는 버스를 타고 있었다. 버스가 전차와 충돌했다.',
@@ -1929,7 +1912,6 @@ const STORY_ARCHIVE = [
       answer: '칼로는 일어날 수 없었기 때문에 천장을 봤고, 자신을 봤습니다. 제약이 없었다면 그 방향은 없었을 것입니다. 우리가 불가능하다고 느끼는 조건이 때로 가장 새로운 형식을 만들어냅니다.'
     },
     publishedDate: '2026년 3월 25일',
-    imagePrompt: 'An 18-year-old woman lying in a bed with a mirror mounted on the ceiling above her, looking up at her reflection and raising a paintbrush toward the mirror image, medical cast visible, Mexican 1920s home setting, warm light, expression of quiet determination, line drawing watercolor style'
   },
 
   /* ═══ 목요일 — 역사·통찰 (PRIMARY: 통찰) ═══ */
@@ -1938,7 +1920,7 @@ const STORY_ARCHIVE = [
     category: '역사·통찰',
     primaryType: '통찰',
     types: ['통찰', '유머'],
-    image: 'images/레오나르도 다빈치의 할 일 목록.png',
+    image: null,
     svgKey: null,
     body: [
       '레오나르도 다빈치는 7,000페이지가 넘는 노트를 남겼다. 해부도, 비행기 설계도, 물의 흐름, 인체 비율, 지도. 르네상스의 모든 지식이 그 안에 있다.',
@@ -1971,7 +1953,6 @@ const STORY_ARCHIVE = [
       answer: '다빈치의 목록은 그가 완전하지 않았다는 증거입니다. 그리고 그것이 그를 멈추지 않았습니다. 미완성과 미루기는 천재의 조건이 아니라 인간의 조건입니다. 중요한 것은 목록을 계속 쓴다는 것입니다.'
     },
     publishedDate: '2026년 3월 26일',
-    imagePrompt: 'A Renaissance man writing in a small notebook at a cluttered desk covered with technical sketches and diagrams, writing a simple to-do list among detailed scientific drawings, candlelight, 15th century Italian setting, expression of curious focus, line drawing watercolor style'
   },
 
   /* ═══ 금요일 — 철학·유머 (PRIMARY: 유머) ═══ */
@@ -1980,7 +1961,7 @@ const STORY_ARCHIVE = [
     category: '철학·유머',
     primaryType: '유머',
     types: ['유머', '통찰'],
-    image: 'images/소크라테스와 크샨티페.png',
+    image: null,
     svgKey: null,
     body: [
       '소크라테스에게는 악처로 유명한 아내가 있었다. 크산티페. 고대 그리스에서 그 이름은 잔소리하는 여자의 대명사가 됐다.',
@@ -2011,7 +1992,6 @@ const STORY_ARCHIVE = [
       answer: '크산티페는 2,400년간 악처의 대명사였습니다. 그러나 《파이돈》의 그 장면을 보면 다른 사람이 보입니다. 우리가 아는 사람에 대한 이야기는 항상 전부가 아닙니다.'
     },
     publishedDate: '2026년 3월 27일',
-    imagePrompt: 'An ancient Greek woman holding an infant standing at a prison doorway, tears visible on her face, an older bearded man seated inside surrounded by friends, their eyes meeting with quiet recognition, stone walls, morning light filtering in, line drawing watercolor style'
   },
 
   /* ═══ 토요일 — 에세이·일상 (PRIMARY: 감동) ═══ */
@@ -2020,7 +2000,7 @@ const STORY_ARCHIVE = [
     category: '에세이·일상',
     primaryType: '감동',
     types: ['감동', '통찰'],
-    image: 'images/발.png',
+    image: 'images/발.webp',
     svgKey: null,
     body: [
       '사랑스러운 발이다.',
