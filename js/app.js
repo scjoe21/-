@@ -435,6 +435,22 @@
     </g>`
   };
 
+  /* ── RENDER: 사이드바 하단 월별 이미지 ── */
+  function renderSidebarBottomImg() {
+    const img = document.getElementById('sidebarBottomImg');
+    if (!img) return;
+    const month = new Date().getMonth() + 1;
+    /* 1순위: 로컬 월별 파일 (images/sidebar-bottom-MM.webp) */
+    const monthStr = String(month).padStart(2, '0');
+    img.src = `images/sidebar-bottom-${monthStr}.webp`;
+    img.onerror = () => {
+      /* 2순위: 이번 달 MONTH_PHOTOS 풍경 사진 */
+      const fallbackUrl = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
+      img.onerror = () => { img.parentElement.style.display = 'none'; };
+      img.src = fallbackUrl;
+    };
+  }
+
   function renderSeasonStrip() {
     const el = document.getElementById('seasonStrip');
     if (!el) return;
@@ -3116,6 +3132,7 @@ ${styleGuide[category] || '이야기의 감정과 주제를 가장 잘 전달하
   function init() {
     applySeasonBackground();
     renderSeasonStrip();
+    renderSidebarBottomImg();
     initHistoryFromStories();
     initSidebar();
     initCuratorMode();
