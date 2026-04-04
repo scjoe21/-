@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(flyctl deploy:*)",
+      "Bash(cmd:*)",
+      "Bash(npx wrangler:*)",
+      "Bash(curl:*)",
+      "Bash(__NEW_LINE_0aaa67965d25086a__ echo:*)",
+      "Bash(flyctl logs:*)",
+      "Bash(flyctl secrets:*)",
+      "Bash(flyctl ssh:*)",
+      "Bash(fly deploy:*)",
+      "Bash(python -c \"import os; f=open\\(''js/data.js'',''r'',encoding=''utf-8''\\); c=f.read\\(\\); f.close\\(\\); print\\(len\\(c\\)\\)\")",
+      "Bash(python update_data.py)",
+      "Bash(node -e \":*)",
+      "Bash(pip install:*)",
+      "Bash(python -c \"from PIL import Image; print\\('Pillow OK'\\)\")",
+      "Bash(python -)",
+      "Bash(node:*)",
+      "Bash(rm:*)"
+    ]
+  }
+}

@@ -439,16 +439,23 @@
   function renderSidebarBottomImg() {
     const img = document.getElementById('sidebarBottomImg');
     if (!img) return;
+    /* 이전 오류로 숨겨진 경우 복원 */
+    if (img.parentElement) img.parentElement.style.display = '';
     const month = new Date().getMonth() + 1;
-    /* 1순위: 로컬 월별 파일 (images/sidebar-bottom-MM.webp) */
     const monthStr = String(month).padStart(2, '0');
-    img.src = `images/sidebar-bottom-${monthStr}.webp`;
+    /* onerror를 src 설정 전에 먼저 등록 (경합 방지) */
     img.onerror = () => {
       /* 2순위: 이번 달 MONTH_PHOTOS 풍경 사진 */
       const fallbackUrl = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
-      img.onerror = () => { img.parentElement.style.display = 'none'; };
+      img.onerror = () => {
+        /* 3순위: 제네릭 sidebar-bottom.webp */
+        img.onerror = () => { img.parentElement.style.display = 'none'; };
+        img.src = 'images/sidebar-bottom.webp';
+      };
       img.src = fallbackUrl;
     };
+    /* 1순위: 로컬 월별 파일 (images/sidebar-bottom-MM.webp) */
+    img.src = `images/sidebar-bottom-${monthStr}.webp`;
   }
 
   function renderSeasonStrip() {
