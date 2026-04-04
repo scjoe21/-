@@ -478,7 +478,7 @@
         const now = new Date();
         const todayDow = now.getDay(); // 0=일~6=토
         const diff = todayDow === 0 ? day
-                   : todayDow === 6 ? (day === 6 ? 0 : day + 1)
+                   : todayDow === 6 ? day - 6   // 토 → 오늘(=0), 월~금 = 이번 주 지난 날들(음수)
                    : day - todayDow;
         dt = new Date(now);
         dt.setDate(now.getDate() + diff);
@@ -1781,16 +1781,23 @@ ${'═'.repeat(50)}
     /* 이번 주 이야기 목록 구성
        publishedDate가 있으면 사용, 없으면 "이번 주" */
     const thisWeekItems = [1, 2, 3, 4, 5, 6].map(d => {
-      const story   = getDisplayStory(d);
-      /* 해당 요일 기준 날짜 추정
-         평일+토: 이번 주  /  일: 이번 주 기준 */
-      const todayDow  = now.getDay(); // 0=일~6=토
-      const targetDow = d;            // 1=월~6=토
-      const diff = todayDow === 0 ? targetDow                              // 일 → 이번 주 해당 요일
-                 : todayDow === 6 ? (targetDow === 6 ? 0 : targetDow + 1) // 토 → 오늘(토=0), 나머지 다음 주
-                 : targetDow - todayDow;                                   // 평일 → 이번 주
-      const dt        = new Date(now);
-      dt.setDate(now.getDate() + diff);
+      /* activeArchive 상태와 무관하게 항상 이번 주 STORIES를 사용 */
+      const staged = loadStaging(d);
+      const story  = (staged && staged.story) ? { ...STORIES[d], ...staged.story } : STORIES[d];
+      /* publishedDate가 'YYYY년 M월 D일' 형식이면 그대로 사용 (메인 화면과 동일) */
+      const pdMatch = (story.publishedDate || '').match(/^(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일$/);
+      let dt;
+      if (pdMatch) {
+        dt = new Date(parseInt(pdMatch[1]), parseInt(pdMatch[2]) - 1, parseInt(pdMatch[3]));
+      } else {
+        const todayDow  = now.getDay();
+        const targetDow = d;
+        const diff = todayDow === 0 ? targetDow
+                   : todayDow === 6 ? targetDow - 6
+                   : targetDow - todayDow;
+        dt = new Date(now);
+        dt.setDate(now.getDate() + diff);
+      }
       return {
         day: d,
         title: story.title,
@@ -1876,14 +1883,25 @@ ${'═'.repeat(50)}
       html += `<div class="sb-month-group sb-archive-group">
         <div class="sb-month-label">지난 이야기</div>`;
       STORY_ARCHIVE.forEach((week, weekIdx) => {
+        /* weekStart(YYYY-MM-DD) 파싱 — 로컬타임 기준으로 파싱해 시간대 오차 방지 */
+        const [wy, wm, wd] = week.weekStart.split('-').map(Number);
         html += `<div class="sb-archive-week">
           <div class="sb-archive-week-label">${week.weekLabel}</div>
           <ul class="sb-date-list">`;
         Object.keys(week.stories).forEach(d => {
           const story = week.stories[d];
           const isActive = activeArchive && activeArchive.weekIdx === weekIdx && activeArchive.day === Number(d);
+          /* 날짜: story.publishedDate 우선, 없으면 weekStart + (day-1) 계산 */
+          let dateStr;
+          const pdMatch = (story.publishedDate || '').match(/^(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일$/);
+          if (pdMatch) {
+            dateStr = `${pdMatch[2]}월 ${pdMatch[3]}일`;
+          } else {
+            const dt = new Date(wy, wm - 1, wd + (Number(d) - 1));
+            dateStr = `${dt.getMonth()+1}월 ${dt.getDate()}일`;
+          }
           html += `<li class="sb-date-item sb-archive-item${isActive ? ' active' : ''}" data-week="${weekIdx}" data-day="${d}" role="button" tabindex="0">
-            <span class="sb-date-num">${WEEKDAY_LABEL[d]}</span>
+            <span class="sb-date-num">${dateStr}</span>
             <span class="sb-date-title">${story.title}</span>
           </li>`;
         });
