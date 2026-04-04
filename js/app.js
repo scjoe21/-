@@ -3135,11 +3135,25 @@ ${styleGuide[category] || '이야기의 감정과 주제를 가장 잘 전달하
     return `${noteComment}STORIES[${day}] = ${JSON.stringify(merged, null, 2)};`;
   }
 
+  /* ── 월 변경 자동 감지: 매월 1일 자정에 배경 갱신 ── */
+  function scheduleMonthRefresh() {
+    const now   = new Date();
+    const next  = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 5); /* 다음달 1일 00:00:05 */
+    const msUntilNext = next - now;
+    setTimeout(() => {
+      applySeasonBackground();
+      renderSeasonStrip();
+      renderSidebarBottomImg();
+      scheduleMonthRefresh(); /* 다음 달을 위해 재등록 */
+    }, msUntilNext);
+  }
+
   /* ── Init ── */
   function init() {
     applySeasonBackground();
     renderSeasonStrip();
     renderSidebarBottomImg();
+    scheduleMonthRefresh();
     initHistoryFromStories();
     initSidebar();
     initCuratorMode();
