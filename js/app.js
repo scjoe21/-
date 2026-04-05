@@ -448,9 +448,9 @@
       /* 2순위: 이번 달 MONTH_PHOTOS 풍경 사진 */
       const fallbackUrl = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
       img.onerror = () => {
-        /* 3순위: 제네릭 sidebar-bottom.webp */
+        /* 3순위: 기차 그림 (train-sidebar.webp) */
         img.onerror = () => { img.parentElement.style.display = 'none'; };
-        img.src = 'images/sidebar-bottom.webp';
+        img.src = 'images/train-sidebar.webp';
       };
       img.src = fallbackUrl;
     };
@@ -472,9 +472,16 @@
       ? `<svg class="season-strip-obj" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">${objSvg}</svg>`
       : '';
 
-    el.innerHTML =
-      `<img class="season-strip-photo" src="${photoUrl}" alt="${month}월 풍경" loading="lazy">` +
-      overlaySvg;
+    const photoImg = new Image();
+    photoImg.className = 'season-strip-photo';
+    photoImg.alt = `${month}월 풍경`;
+    photoImg.loading = 'lazy';
+    photoImg.onerror = () => { el.style.display = 'none'; };
+    photoImg.src = photoUrl;
+    el.innerHTML = '';
+    el.style.display = '';
+    el.appendChild(photoImg);
+    if (overlaySvg) el.insertAdjacentHTML('beforeend', overlaySvg);
   }
 
   function renderDateSeason(day) {
