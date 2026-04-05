@@ -445,14 +445,9 @@
     const monthStr = String(month).padStart(2, '0');
     /* onerror를 src 설정 전에 먼저 등록 (경합 방지) */
     img.onerror = () => {
-      /* 2순위: 이번 달 MONTH_PHOTOS 풍경 사진 */
-      const fallbackUrl = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
-      img.onerror = () => {
-        /* 3순위: 기차 그림 (train-sidebar.webp) */
-        img.onerror = () => { img.parentElement.style.display = 'none'; };
-        img.src = 'images/train-sidebar.webp';
-      };
-      img.src = fallbackUrl;
+      /* 2순위: 기차 그림 (train-sidebar.webp) */
+      img.onerror = () => { img.parentElement.style.display = 'none'; };
+      img.src = 'images/train-sidebar.webp';
     };
     /* 1순위: 로컬 월별 파일 (images/sidebar-bottom-MM.webp) */
     img.src = `images/sidebar-bottom-${monthStr}.webp`;
@@ -476,7 +471,11 @@
     photoImg.className = 'season-strip-photo';
     photoImg.alt = `${month}월 풍경`;
     photoImg.loading = 'lazy';
-    photoImg.onerror = () => { el.style.display = 'none'; };
+    photoImg.onerror = () => {
+      /* 로컬 폴백: sidebar-bottom.webp */
+      photoImg.onerror = () => { el.style.display = 'none'; };
+      photoImg.src = 'images/sidebar-bottom.webp';
+    };
     photoImg.src = photoUrl;
     el.innerHTML = '';
     el.style.display = '';
