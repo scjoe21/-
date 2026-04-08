@@ -456,9 +456,8 @@
   function renderSeasonStrip() {
     const el = document.getElementById('seasonStrip');
     if (!el) return;
-    const month    = new Date().getMonth() + 1;
-    const monthStr = String(month).padStart(2, '0');
-    const obj      = getCurrentObject();
+    const month = new Date().getMonth() + 1;
+    const obj   = getCurrentObject();
 
     /* 오브제 SVG 소품 — 사진 위에 반투명 오버레이로 표시 */
     const objSvg = obj ? (OBJECT_SVGS[obj.name] || '') : '';
@@ -469,13 +468,8 @@
     const photoImg = new Image();
     photoImg.className = 'season-strip-photo';
     photoImg.alt = `${month}월 풍경`;
-    /* 1순위 실패 → 2순위: MONTH_PHOTOS Unsplash URL */
-    photoImg.onerror = () => {
-      photoImg.onerror = () => { el.style.display = 'none'; };
-      photoImg.src = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
-    };
-    /* 1순위: 로컬 파일 images/bg-month-MM.webp */
-    photoImg.src = `images/bg-month-${monthStr}.webp`;
+    photoImg.onerror = () => { el.style.display = 'none'; };
+    photoImg.src = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
     el.innerHTML = '';
     el.style.display = '';
     el.appendChild(photoImg);
