@@ -318,22 +318,22 @@
     document.body.classList.add(`season-${season}`);
   }
 
-  /* ── 월별 실사 풍경 사진 URL (1월~12월)
-     URL은 images/ 폴더의 로컬 파일 경로나 원하는 사진 URL로 교체할 수 있습니다.
+  /* ── 월별 풍경 사진 URL (1월~12월) — picsum.photos 사용 (hotlink 허용, 무료)
+     seed 값이 같으면 항상 같은 사진이 반환됩니다.
   ── */
   const MONTH_PHOTOS = {
-     1: 'https://images.unsplash.com/photo-1491002052546-bf38f186af56?auto=format&fit=crop&w=1400&q=80', /* 1월 — 설원 */
-     2: 'https://images.unsplash.com/photo-1516912481808-3406841bd33c?auto=format&fit=crop&w=1400&q=80', /* 2월 — 눈 덮인 숲 */
-     3: 'https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?auto=format&fit=crop&w=1400&q=80', /* 3월 — 봄 길목 */
-     4: 'https://images.unsplash.com/photo-1490750967868-88df5691cc4c?auto=format&fit=crop&w=1400&q=80', /* 4월 — 벚꽃 */
-     5: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1400&q=80', /* 5월 — 초록 들판 */
-     6: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1400&q=80', /* 6월 — 안개 산 */
-     7: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80', /* 7월 — 여름 해변 */
-     8: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1400&q=80', /* 8월 — 산 호수 */
-     9: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=1400&q=80', /* 9월 — 단풍 시작 */
-    10: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1400&q=80', /* 10월 — 가을 숲길 */
-    11: 'https://images.unsplash.com/photo-1477414348463-c0eb7f1359b6?auto=format&fit=crop&w=1400&q=80', /* 11월 — 늦가을 안개 */
-    12: 'https://images.unsplash.com/photo-1418985991508-e47386d96a71?auto=format&fit=crop&w=1400&q=80'  /* 12월 — 겨울 새벽 */
+     1: 'https://picsum.photos/seed/ihe-jan/1400/400', /* 1월 — 설원 */
+     2: 'https://picsum.photos/seed/ihe-feb/1400/400', /* 2월 — 겨울 숲 */
+     3: 'https://picsum.photos/seed/ihe-mar/1400/400', /* 3월 — 봄 길목 */
+     4: 'https://picsum.photos/seed/ihe-apr/1400/400', /* 4월 — 봄 풍경 */
+     5: 'https://picsum.photos/seed/ihe-may/1400/400', /* 5월 — 초록 들판 */
+     6: 'https://picsum.photos/seed/ihe-jun/1400/400', /* 6월 — 여름 초입 */
+     7: 'https://picsum.photos/seed/ihe-jul/1400/400', /* 7월 — 여름 */
+     8: 'https://picsum.photos/seed/ihe-aug/1400/400', /* 8월 — 산 호수 */
+     9: 'https://picsum.photos/seed/ihe-sep/1400/400', /* 9월 — 단풍 시작 */
+    10: 'https://picsum.photos/seed/ihe-oct/1400/400', /* 10월 — 가을 숲길 */
+    11: 'https://picsum.photos/seed/ihe-nov/1400/400', /* 11월 — 늦가을 */
+    12: 'https://picsum.photos/seed/ihe-dec/1400/400', /* 12월 — 겨울 새벽 */
   };
 
   /* ── RENDER: 하단 계절 띠 ── */
