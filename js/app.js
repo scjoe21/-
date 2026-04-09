@@ -453,11 +453,20 @@
     img.src = `images/sidebar-bottom-${monthStr}.webp`;
   }
 
+  /* 계절별 그라디언트 — Unsplash 사진 로드 실패 시 폴백 */
+  const SEASON_GRADIENTS = {
+    spring: 'linear-gradient(135deg, #f9e4ec 0%, #d4edda 100%)',
+    summer: 'linear-gradient(135deg, #b3e0f7 0%, #a8d8a8 100%)',
+    autumn: 'linear-gradient(135deg, #ffe0b2 0%, #f4a261 100%)',
+    winter: 'linear-gradient(135deg, #e8f0f7 0%, #b0c4d8 100%)',
+  };
+
   function renderSeasonStrip() {
     const el = document.getElementById('seasonStrip');
     if (!el) return;
-    const month = new Date().getMonth() + 1;
-    const obj   = getCurrentObject();
+    const month  = new Date().getMonth() + 1;
+    const season = getSeason(month);
+    const obj    = getCurrentObject();
 
     /* 오브제 SVG 소품 — 사진 위에 반투명 오버레이로 표시 */
     const objSvg = obj ? (OBJECT_SVGS[obj.name] || '') : '';
@@ -465,13 +474,20 @@
       ? `<svg class="season-strip-obj" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">${objSvg}</svg>`
       : '';
 
+    /* 초기화: 이전 폴백 그라디언트 제거 */
+    el.innerHTML = '';
+    el.style.display = '';
+    el.style.background = '';
+
     const photoImg = new Image();
     photoImg.className = 'season-strip-photo';
     photoImg.alt = `${month}월 풍경`;
-    photoImg.onerror = () => { el.style.display = 'none'; };
+    photoImg.onerror = () => {
+      /* 사진 로드 실패 시 숨기지 않고 계절 그라디언트로 대체 */
+      photoImg.remove();
+      el.style.background = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
+    };
     photoImg.src = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
-    el.innerHTML = '';
-    el.style.display = '';
     el.appendChild(photoImg);
     if (overlaySvg) el.insertAdjacentHTML('beforeend', overlaySvg);
   }
