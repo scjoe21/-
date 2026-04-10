@@ -468,28 +468,32 @@
     const season = getSeason(month);
     const obj    = getCurrentObject();
 
-    /* 오브제 SVG 소품 — 사진 위에 반투명 오버레이로 표시 */
+    /* 오브제 SVG 소품 */
     const objSvg = obj ? (OBJECT_SVGS[obj.name] || '') : '';
-    const overlaySvg = objSvg
-      ? `<svg class="season-strip-obj" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">${objSvg}</svg>`
-      : '';
 
-    /* 초기화: 이전 폴백 그라디언트 제거 */
+    /* 초기화 */
     el.innerHTML = '';
     el.style.display = '';
-    el.style.background = '';
+    /* 계절 그라디언트를 즉시 표시 — 사진 로드 실패해도 항상 보임 */
+    el.style.background = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
 
+    /* SVG 오브제 오버레이 (사진/그라디언트 위에) */
+    if (objSvg) {
+      el.insertAdjacentHTML('beforeend',
+        `<svg class="season-strip-obj" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">${objSvg}</svg>`
+      );
+    }
+
+    /* 사진 로드 시도: 성공하면 그라디언트를 교체 */
     const photoImg = new Image();
     photoImg.className = 'season-strip-photo';
     photoImg.alt = `${month}월 풍경`;
-    photoImg.onerror = () => {
-      /* 사진 로드 실패 시 숨기지 않고 계절 그라디언트로 대체 */
-      photoImg.remove();
-      el.style.background = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
+    photoImg.onload = () => {
+      el.style.background = '';
+      el.insertAdjacentElement('afterbegin', photoImg);
     };
+    /* 로드 실패 시: 이미 설정된 그라디언트 유지 (별도 처리 불필요) */
     photoImg.src = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
-    el.appendChild(photoImg);
-    if (overlaySvg) el.insertAdjacentHTML('beforeend', overlaySvg);
   }
 
   function renderDateSeason(day) {
