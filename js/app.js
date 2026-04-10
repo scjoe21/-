@@ -318,22 +318,20 @@
     document.body.classList.add(`season-${season}`);
   }
 
-  /* ── 월별 풍경 사진 URL (1월~12월) — picsum.photos ID 고정 (hotlink 허용, 무료)
-     ID가 고정이므로 항상 같은 사진이 표시됩니다.
-  ── */
+  /* ── 월별 풍경 사진 — 로컬 파일 (images/month-MM.jpg) ── */
   const MONTH_PHOTOS = {
-     1: 'https://picsum.photos/id/558/1400/400',  /* 1월 — 눈 덮인 설경, 파란 하늘 */
-     2: 'https://picsum.photos/id/571/1400/400',  /* 2월 — 겨울 끝 침엽수 숲, 안개 빛 */
-     3: 'https://picsum.photos/id/544/1400/400',  /* 3월 — 황금빛 새벽 안개 산 능선 */
-     4: 'https://picsum.photos/id/976/1400/400',  /* 4월 — 역광 속 봄꽃 군락 */
-     5: 'https://picsum.photos/id/110/1400/400',  /* 5월 — 황금 새벽빛 초록 목초지 */
-     6: 'https://picsum.photos/id/666/1400/400',  /* 6월 — 대나무 숲 여름 녹음 */
-     7: 'https://picsum.photos/id/15/1400/400',   /* 7월 — 이끼 바위 폭포, 울창한 계곡 */
-     8: 'https://picsum.photos/id/1051/1400/400', /* 8월 — 고산 호수와 나무 부두 */
-     9: 'https://picsum.photos/id/482/1400/400',  /* 9월 — 초가을 산악 호수 */
-    10: 'https://picsum.photos/id/923/1400/400',  /* 10월 — 붉은 단풍 숲길 */
-    11: 'https://picsum.photos/id/877/1400/400',  /* 11월 — 안개 침엽수 숲 빛줄기 */
-    12: 'https://picsum.photos/id/412/1400/400',  /* 12월 — 서리 낀 침엽수 호수 반영 */
+     1: 'images/month-01.jpg',  /* 1월 — 눈 덮인 설경 */
+     2: 'images/month-02.jpg',  /* 2월 — 겨울 끝 침엽수 숲 */
+     3: 'images/month-03.jpg',  /* 3월 — 황금빛 새벽 안개 산 능선 */
+     4: 'images/month-04.jpg',  /* 4월 — 역광 속 봄꽃 군락 */
+     5: 'images/month-05.jpg',  /* 5월 — 황금 새벽빛 초록 목초지 */
+     6: 'images/month-06.jpg',  /* 6월 — 대나무 숲 여름 녹음 */
+     7: 'images/month-07.jpg',  /* 7월 — 이끼 바위 폭포 */
+     8: 'images/month-08.jpg',  /* 8월 — 고산 호수와 나무 부두 */
+     9: 'images/month-09.jpg',  /* 9월 — 초가을 산악 호수 */
+    10: 'images/month-10.jpg',  /* 10월 — 붉은 단풍 숲길 */
+    11: 'images/month-11.jpg',  /* 11월 — 안개 침엽수 숲 빛줄기 */
+    12: 'images/month-12.jpg',  /* 12월 — 서리 낀 침엽수 호수 반영 */
   };
 
   /* ── RENDER: 하단 계절 띠 ── */
