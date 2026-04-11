@@ -18,9 +18,5 @@ echo === Git Push ===
 git push origin main
 
 echo.
-echo === Fly Deploy ===
-fly deploy
-
-echo.
-echo Done.
+echo Done. GitHub Pages will auto-deploy from git push above.
 pause
