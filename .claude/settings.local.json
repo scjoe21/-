@@ -21,7 +21,9 @@
       "Bash(rm:*)",
       "WebFetch(domain:picsum.photos)",
       "WebFetch(domain:fastly.picsum.photos)",
-      "Bash(start:*)"
+      "Bash(start:*)",
+      "Bash(gh api:*)",
+      "Bash(gh run:*)"
     ]
   }
 }
