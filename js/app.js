@@ -1492,6 +1492,16 @@
   /* 전역 노출 — 브라우저 콘솔에서 markSCJBlogUsed() 호출 가능 */
   window.markSCJBlogUsed = markSCJBlogUsed;
 
+  /* 기 게재 이야기 제목 목록 (최근 30편) */
+  function buildExclusionList() {
+    const titles = [];
+    Object.values(STORIES).forEach(s => { if (s && s.title) titles.push(s.title); });
+    for (const week of STORY_ARCHIVE) {
+      Object.values(week.stories).forEach(s => { if (s && s.title) titles.push(s.title); });
+    }
+    return titles.slice(0, 30);
+  }
+
   /* 5편 후보 프롬프트 생성 */
   function buildCandidatesPrompt(day) {
     const story   = STORIES[day];
@@ -1506,9 +1516,21 @@
       ? `\n• ⭐ 큐레이터 본인 블로그(blog.naver.com/scjoe)에서 ${story.category} 주제에 맞는 글을 후보 1편으로 포함해 주세요. 출처 표기: "SCJ의 블로그". (마지막 사용: ${months === 99 ? '없음' : months + '개월 전'})`
       : '';
 
+    const exclusionList = buildExclusionList();
+    const exclusionSection = exclusionList.length > 0
+      ? `\n• 아래 기 게재 이야기와 인물·소재가 겹치지 않도록:\n${exclusionList.map(t => '  - ' + t).join('\n')}`
+      : '';
+
     return `당신은 "통찰·유머·감동" 사이트의 AI 콘텐츠 파트너입니다.
 【${DAY_NAMES[day]} — ${story.category}】 주제에 맞는 이야기 후보 5개를 제안해 주세요.
 ${prefCtx ? '\n' + prefCtx + '\n' : ''}
+${'═'.repeat(46)}
+참신성·반전 원칙 (필수)
+${'═'.repeat(46)}
+• 교과서·TED·다큐·명언집에 자주 인용되는 유명 에피소드 지양
+• 대중에게 잘 알려지지 않은 인물·사건·발견 우선 (소수만 아는 이야기)
+• 각 후보는 반드시 예상치 못한 반전(twist) 또는 감정적 전환점이 포함되어야 함${exclusionSection}
+
 ${'═'.repeat(46)}
 게재 조건
 ${'═'.repeat(46)}
@@ -1528,6 +1550,7 @@ ${'═'.repeat(46)}
 [주요 IHE] 통찰 또는 유머 또는 감동
 [IHE 이유] 이 이야기가 왜 그 감각을 일으키는지 1문장
 [개요] 이야기 흐름을 4–6문장으로 스케치 (인물·사건·반전·결말 포함)
+[반전 포인트] 독자가 예상치 못할 한 줄 — 이야기의 핵심 전환
 [독자에게] 읽고 나서 한 줄로 기억될 것
 
 【후보 2】
