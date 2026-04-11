@@ -2421,7 +2421,7 @@ const STORY_ARCHIVE = [
 ];
 
 /* ──────────────────────────────────────────────────────────
-   SOURCES  ·  50개 소스 탐색 풀
+   SOURCES  ·  69개 소스 탐색 풀
    type: website | youtube | podcast | newsletter | reddit
    cats: 이 소스에서 잘 찾아지는 IHE 카테고리 (최대 2)
    days: 관련 요일 (1=월 … 5=금)
@@ -2587,6 +2587,73 @@ const SOURCES = [
   { id:'s50', name:'Foreign Affairs',           url:'https://www.foreignaffairs.com',
     type:'website',    cats:['통찰'],         days:[5],
     desc:'국제 정치와 외교 정책의 심층 분석. 무게감 있는 시각. 무료 기사 제공.' },
+
+  /* ── 한국어 소스 ── */
+  { id:'s51', name:'브런치',                      url:'https://brunch.co.kr',
+    type:'website',    cats:['통찰','감동'],  days:[1,2,3,4,5],
+    desc:'국내 작가·일반인의 고품질 에세이 플랫폼. 통찰과 감동의 원석이 풍부하다. 큐레이터 추천 채널 탐색 가능.' },
+  { id:'s52', name:'오늘의 유머',                 url:'https://www.todayhumor.co.kr',
+    type:'website',    cats:['유머'],         days:[1,2,3,4,5],
+    desc:'한국 인터넷 유머의 원천. 베스트 게시판에서 시대를 반영한 유머 감성 발굴 가능.' },
+  { id:'s53', name:'시사IN',                      url:'https://www.sisain.co.kr',
+    type:'website',    cats:['통찰'],         days:[5],
+    desc:'국내 최고 수준의 심층 탐사 저널리즘. 경제·정치·사회의 구조적 통찰을 제공한다.' },
+  { id:'s54', name:'딴지일보',                    url:'https://www.ddanzi.com',
+    type:'website',    cats:['유머','통찰'],  days:[5],
+    desc:'한국의 대표 풍자·패러디 미디어. 사회·정치 이슈를 유머로 비틀어 통찰을 만들어낸다.' },
+
+  /* ── 유머 전담 소스 ── */
+  { id:'s55', name:"McSweeney's Internet Tendency", url:'https://www.mcsweeneys.net/tendencies',
+    type:'website',    cats:['유머'],         days:[1,2,3,4,5],
+    desc:'문학적 수준의 미국 유머·풍자. 지성과 웃음이 동시에 터지는 품격 있는 코미디.' },
+  { id:'s56', name:'The Onion',                   url:'https://www.theonion.com',
+    type:'website',    cats:['유머'],         days:[5],
+    desc:'세계 최고의 풍자 뉴스. 시사를 비트는 방식이 통찰과 웃음을 동시에 만들어낸다.' },
+  { id:'s57', name:'Existential Comics',          url:'https://existentialcomics.com',
+    type:'website',    cats:['유머','통찰'],  days:[3],
+    desc:'철학자들을 코믹하게 그린 만화 시리즈. 철학 개념을 유머로 풀어 수요일(철학) 최적.' },
+  { id:'s58', name:'Wait But Why',                url:'https://waitbutwhy.com',
+    type:'website',    cats:['유머','통찰'],  days:[3,4],
+    desc:'Tim Urban의 긴 형식 유머+통찰 에세이. 인류 문명·심리·과학을 독보적 스타일로 파고든다.' },
+
+  /* ── 비서구권·다양성 ── */
+  { id:'s59', name:'Sapiens',                     url:'https://www.sapiens.org',
+    type:'website',    cats:['통찰','감동'],  days:[4],
+    desc:'인류학 전문 무료 잡지. 비서구 문화·역사의 시각을 제공하는 보기 드문 소스.' },
+  { id:'s60', name:'Emergence Magazine',          url:'https://emergencemagazine.org',
+    type:'website',    cats:['통찰','감동'],  days:[4],
+    desc:'생태·자연·인간문화의 교차. 아름다운 산문과 깊은 감동. 목요일(과학·문화) 최적.' },
+  { id:'s61', name:'Public Domain Review',        url:'https://publicdomainreview.org',
+    type:'website',    cats:['통찰','감동'],  days:[2],
+    desc:'역사 속 기묘하고 아름다운 문서·이미지·텍스트 발굴. 화요일(역사) 최적의 원석 창고.' },
+  { id:'s62', name:'Cabinet Magazine',            url:'https://cabinetmagazine.org',
+    type:'website',    cats:['통찰'],         days:[2],
+    desc:'역사·문화의 틈새를 파고드는 독창적 학술 잡지. 아무도 다루지 않는 이야기를 다룬다.' },
+
+  /* ── 서브스택 뉴스레터 ── */
+  { id:'s63', name:'Astral Codex Ten',            url:'https://www.astralcodexten.com',
+    type:'newsletter', cats:['통찰','유머'],  days:[3],
+    desc:'Scott Alexander의 인지과학·철학·사회 분석. 엄밀하고 유머러스한 독보적 글쓰기.' },
+  { id:'s64', name:'Works in Progress',           url:'https://worksinprogress.news',
+    type:'newsletter', cats:['통찰'],         days:[4],
+    desc:'문명·기술·진보에 관한 깊은 분석. "왜 더 나아지고 있는가"를 과학적으로 탐구.' },
+  { id:'s65', name:'Construction Physics',        url:'https://www.construction-physics.com',
+    type:'newsletter', cats:['통찰'],         days:[5],
+    desc:'제조업·경제·기술의 교차점. 의외의 구체적 사실로 경제의 숨겨진 면을 드러낸다.' },
+  { id:'s66', name:'Noahpinion',                  url:'https://www.noahpinion.blog',
+    type:'newsletter', cats:['통찰','유머'],  days:[5],
+    desc:'경제학자 Noah Smith의 낙관론적 경제·정치 분석. 논쟁적이지만 근거가 탄탄하다.' },
+
+  /* ── 아카이브·발굴형 소스 ── */
+  { id:'s67', name:'Damn Interesting',            url:'https://www.damninteresting.com',
+    type:'website',    cats:['통찰','유머'],  days:[2,4],
+    desc:'"진짜로 흥미로운" 역사·과학 이야기만 선별. 제목 그대로의 퀄리티 보장. 강력 추천.' },
+  { id:'s68', name:'Futility Closet',             url:'https://www.futilitycloset.com',
+    type:'website',    cats:['통찰','감동'],  days:[2],
+    desc:'역사 속 기묘하고 감동적인 이야기 전문. 화요일(역사·문학) 최적의 발굴 소스.' },
+  { id:'s69', name:'Open Culture',                url:'https://www.openculture.com',
+    type:'website',    cats:['통찰','감동'],  days:[2,3],
+    desc:'거장들의 육성이 담긴 무료 강의·책·영상 큐레이션. 역사·철학·문학의 1차 자료 접근.' },
 
   /* ── SCJ 블로그 (6개월에 1회, 모든 요일) ── */
   { id:'scj', name:'SCJ 블로그',               url:'https://blog.naver.com/scjoe',
