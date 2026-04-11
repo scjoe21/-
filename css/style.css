@@ -1169,55 +1169,135 @@ html, body { height: 100%; }
   font-style: italic; margin: 0;
 }
 
-/* ─── Image Gen FAB 두 번째 버튼 ─── */
+/* ─── FAB 두 번째 버튼 ─── */
 #curatorFab button + button { margin-top: 0.5rem; }
 
-/* ─── Image Gen Drawer ─── */
-#imageGenDrawer {
+/* ============================================================
+   WEEKLY PLAN DRAWER
+   ============================================================ */
+#weeklyPlanDrawer {
   position: fixed; inset: 0; z-index: 1100;
   background: rgba(0,0,0,0.45);
   display: flex; align-items: flex-end;
   opacity: 0; pointer-events: none;
   transition: opacity 0.25s;
 }
-#imageGenDrawer.open { opacity: 1; pointer-events: auto; }
-#imageGenDrawer .curator-note-edit-panel { transform: translateY(100%); }
-#imageGenDrawer.open .curator-note-edit-panel { transform: translateY(0); }
-.image-gen-apikey-row {
-  margin-bottom: 0.65rem;
+#weeklyPlanDrawer.open { opacity: 1; pointer-events: auto; }
+.weekly-plan-panel {
+  background: var(--bg);
+  border-radius: 18px 18px 0 0;
+  width: 100%; max-width: 680px;
+  margin: 0 auto;
+  max-height: 92vh;
+  display: flex; flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+  box-shadow: 0 -4px 32px rgba(0,0,0,0.18);
 }
-.image-gen-apikey-row input {
-  width: 100%; box-sizing: border-box;
-  font-size: 0.8rem; padding: 0.35rem 0.55rem;
-  border: 1.5px solid var(--border); border-radius: 6px;
-  background: var(--bg); color: var(--text);
-  font-family: monospace;
+#weeklyPlanDrawer.open .weekly-plan-panel { transform: translateY(0); }
+.weekly-plan-body {
+  flex: 1; overflow-y: auto;
+  padding: 0.9rem 1.1rem 0.5rem;
 }
-.image-gen-apikey-row input:focus { outline: none; border-color: var(--color-active); }
-.image-gen-style-row {
-  display: flex; align-items: center; gap: 0.6rem; margin-top: 0.7rem;
+/* Step 1 */
+.wp-outline-btn {
+  display: inline-block;
+  padding: 0.45rem 1rem;
+  border: 1.5px solid var(--color-active);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-active);
+  font-size: 0.88rem; font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
 }
-.image-gen-style-label {
-  font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;
-}
-#imageGenStyle {
-  flex: 1; font-size: 0.82rem; padding: 0.35rem 0.5rem;
-  border: 1.5px solid var(--border); border-radius: 6px;
-  background: var(--bg); color: var(--text);
-}
-.image-gen-preview {
-  margin-top: 0.9rem; border-radius: 10px; overflow: hidden;
-  border: 1px solid var(--border);
-}
-.image-gen-preview img {
-  width: 100%; display: block; max-height: 240px; object-fit: cover;
-}
-.image-gen-status {
+.wp-outline-btn:hover { background: var(--color-active); color: #fff; }
+.wp-copy-status {
   font-size: 0.82rem; color: var(--text-muted);
-  margin: 0.5rem 0 0; min-height: 1.2em;
+  margin: 0.45rem 0 0.7rem; min-height: 1.2em;
 }
-.image-gen-apply-btn { margin-left: 0.6rem; background: #2563eb; }
-.image-gen-apply-btn:hover { opacity: 0.88; }
+#wpPasteArea {
+  width: 100%; box-sizing: border-box;
+  margin-top: 0.7rem;
+  font-size: 0.84rem; line-height: 1.5;
+  padding: 0.55rem 0.7rem;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  background: var(--bg); color: var(--text);
+  resize: vertical;
+}
+#wpPasteArea:focus { outline: none; border-color: var(--color-active); }
+.wp-parse-btn { margin-top: 0.75rem; }
+/* Step 2 tabs */
+.wp-day-tabs {
+  display: flex; gap: 0.4rem;
+  margin-bottom: 0.9rem;
+  flex-wrap: wrap;
+}
+.wp-day-tab {
+  padding: 0.38rem 0.9rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.wp-day-tab.active {
+  background: var(--color-active);
+  border-color: var(--color-active);
+  color: #fff;
+}
+.wp-day-tab.done:not(.active) {
+  border-color: #4caf50; color: #4caf50;
+}
+.wp-day-tab.empty { opacity: 0.4; }
+/* Candidate cards */
+.wp-cand-card {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  margin-bottom: 0.65rem;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.wp-cand-card.selected {
+  border-color: var(--color-active);
+  background: color-mix(in srgb, var(--color-active) 8%, transparent);
+}
+.wp-cand-radio { margin-top: 0.15rem; flex-shrink: 0; accent-color: var(--color-active); }
+.wp-cand-body { flex: 1; min-width: 0; }
+.wp-cand-title {
+  font-weight: 700; font-size: 0.95rem;
+  margin-bottom: 0.3rem; line-height: 1.35;
+}
+.wp-cand-ihe {
+  display: inline-block;
+  font-size: 0.75rem; font-weight: 600;
+  padding: 0.12rem 0.55rem;
+  border-radius: 10px;
+  margin-bottom: 0.35rem;
+}
+.wp-cand-ihe.type-insight  { background: #e8f4fd; color: #1565c0; }
+.wp-cand-ihe.type-humor    { background: #fff8e1; color: #e65100; }
+.wp-cand-ihe.type-emotion  { background: #fce4ec; color: #c62828; }
+.wp-cand-meta {
+  font-size: 0.78rem; color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+.wp-cand-outline {
+  font-size: 0.83rem; line-height: 1.55;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+.wp-cand-why {
+  font-size: 0.8rem; color: var(--text-muted);
+  font-style: italic;
+}
+.wp-empty-msg {
+  text-align: center; color: var(--text-muted);
+  font-size: 0.88rem; padding: 2rem 1rem; line-height: 1.7;
+}
 
 /* ============================================================
    STORY GENERATOR DRAWER

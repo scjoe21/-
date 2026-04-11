@@ -9,18 +9,6 @@
   /* ── Constants ── */
   const DAY_NAMES   = { 1: '월요일', 2: '화요일', 3: '수요일', 4: '목요일', 5: '금요일', 6: '토요일' };
   const DAY_SHORT   = { 1: '월', 2: '화', 3: '수', 4: '목', 5: '금', 6: '토' };
-  /* ── Gemini Imagen 3 스타일 프롬프트 ── */
-  const IMG_STYLE = {
-    loose_pen: 'Rendered as a loose gestural pen drawing: confident expressive ink strokes, sketchy editorial line work, crosshatching for shadow, spontaneous hand-drawn quality on warm cream paper.',
-    watercolor: 'Rendered as a soft watercolor wash illustration: translucent layered pigments, wet-on-wet bleeding color edges, luminous paper texture showing through, organic gentle color pools, delicate impressionistic mood.',
-    impasto:    'Rendered with impasto oil paint accents: thick sculptural brushwork, palette knife texture marks, visible paint body with tactile relief surface, rich saturated colors, gestural expressionist energy.',
-    mixed:      'Rendered as mixed media editorial art: loose confident pen line drawing as structural skeleton, soft watercolor wash fills for color and atmosphere, selective impasto texture accents on focal points. Layered expressive fine art style.'
-  };
-  const IMG_TONE = {
-    '통찰': 'contemplative, quiet, thought-provoking visual metaphor',
-    '유머': 'playful, light, witty visual irony',
-    '감동': 'warm, tender, emotionally resonant, soft light'
-  };
   const TYPE_CLASS  = { '통찰': 'insight', '유머': 'humor', '감동': 'emotion' };
   const TYPE_ICON   = { '통찰': '💡', '유머': '😄', '감동': '❤️' };
 
@@ -3235,45 +3223,216 @@ ${styleGuide[category] || '이야기의 감정과 주제를 가장 잘 전달하
       });
     })();
 
-    /* 이미지 생성 드로어 */
-    (function initImageGenDrawer() {
-      const drawer      = document.getElementById('imageGenDrawer');
-      const closeBtn    = document.getElementById('imageGenClose');
-      const fabBtn      = document.getElementById('openImageGen');
-      const apiKeyInput = document.getElementById('imageGenApiKey');
-      const promptArea  = document.getElementById('imageGenPrompt');
-      const styleSelect = document.getElementById('imageGenStyle');
-      const genBtn      = document.getElementById('imageGenGenerate');
-      const applyBtn    = document.getElementById('imageGenApply');
-      const preview     = document.getElementById('imageGenPreview');
-      const previewImg  = document.getElementById('imageGenPreviewImg');
-      const statusEl    = document.getElementById('imageGenStatus');
+    /* 다음주 편성 드로어 */
+    (function initWeeklyPlanDrawer() {
+      const drawer     = document.getElementById('weeklyPlanDrawer');
+      const closeBtn   = document.getElementById('weeklyPlanClose');
+      const fabBtn     = document.getElementById('openWeeklyPlan');
+      const step1      = document.getElementById('wpStep1');
+      const step2      = document.getElementById('wpStep2');
+      const footer     = document.getElementById('wpFooter');
+      const copyBtn    = document.getElementById('wpCopyPrompt');
+      const copyStatus = document.getElementById('wpCopyStatus');
+      const pasteArea  = document.getElementById('wpPasteArea');
+      const parseBtn   = document.getElementById('wpParseBtn');
+      const tabsEl     = document.getElementById('wpDayTabs');
+      const candArea   = document.getElementById('wpCandidatesArea');
+      const selectSt   = document.getElementById('wpSelectStatus');
+      const backBtn    = document.getElementById('wpBackBtn');
+      const saveBtn    = document.getElementById('wpSaveBtn');
       if (!drawer || !fabBtn) return;
 
-      const API_KEY_STORE = 'gemini-api-key';
-      let generatedDataUrl = null;
+      const WEEKDAYS = [1, 2, 3, 4, 5]; /* 월~금 */
+      /* day → 선택된 후보 index (0~4) */
+      let selections  = {};
+      /* day → parsedCandidates[] */
+      let parsedByDay = {};
+      let activeTab   = 1;
 
-      function buildAutoPrompt(day) {
-        const story = getDisplayStory(day);
-        /* 이야기에 imagePrompt 필드가 있으면 우선 사용 */
-        if (story.imagePrompt) return story.imagePrompt;
-        /* 없으면 제목 + 첫 단락 앞부분으로 자동 생성 */
-        const snippet = (story.body[0] || '').slice(0, 120).replace(/\n/g, ' ');
-        return `${story.title}. ${snippet}`;
+      /* ── 다음주 전체 후보 프롬프트 생성 ── */
+      function buildWeeklyPrompt() {
+        const exclusionList = buildExclusionList();
+        const exclusionSection = exclusionList.length > 0
+          ? `\n아래 기 게재 이야기와 인물·소재가 겹치지 않도록 주의하세요:\n${exclusionList.slice(0, 20).map(t => '  - ' + t).join('\n')}\n` : '';
+
+        const obj = getCurrentObject();
+        const objHint = obj ? `\n• 이달의 오브제 "${obj.name}" 정서를 일부 반영 가능 (선택사항)` : '';
+
+        const dayBlocks = WEEKDAYS.map(d => {
+          const story = STORIES[d];
+          const cat   = story ? story.category : '';
+          return `=== ${DAY_NAMES[d]} (${cat}) ===\n【후보 1】~【후보 5】 형식으로 5편 제안`;
+        }).join('\n\n');
+
+        const dayDetails = WEEKDAYS.map(d => {
+          const story = STORIES[d];
+          const cat   = story ? story.category : '';
+          return `【${DAY_NAMES[d]} · ${cat}】`;
+        }).join(' / ');
+
+        return `당신은 "통찰·유머·감동" 사이트의 AI 콘텐츠 파트너입니다.
+다음 주 월요일~금요일에 게재할 이야기 후보를 요일별로 각 5편씩, 총 25편 제안해 주세요.
+${exclusionSection}
+${'═'.repeat(50)}
+요일별 주제
+${'═'.repeat(50)}
+${dayDetails}
+${objHint}
+
+${'═'.repeat(50)}
+참신성·반전 원칙 (필수)
+${'═'.repeat(50)}
+• 교과서·TED·다큐·명언집에 자주 인용되는 유명 에피소드 지양
+• 대중에게 잘 알려지지 않은 인물·사건·발견 우선
+• 각 후보는 예상치 못한 반전(twist) 또는 감정적 전환점 포함
+• 한국어 서술, 한국 소재 요일별 1편 이상 포함
+
+${'═'.repeat(50)}
+각 후보 형식 (요일별 반복, 반드시 아래 형식 그대로)
+${'═'.repeat(50)}
+
+=== 월요일 ===
+【후보 1】
+[제목] 짧고 기억에 남는 구절
+[소재·출처] 실존 인물/사건/작품명
+[주요 IHE] 통찰 또는 유머 또는 감동
+[IHE 이유] 1문장
+[개요] 4–6문장 스케치
+[반전 포인트] 한 줄
+
+【후보 2】
+... (같은 형식)
+
+【후보 3】
+... (같은 형식)
+
+【후보 4】
+... (같은 형식)
+
+【후보 5】
+... (같은 형식)
+
+=== 화요일 ===
+... (같은 형식으로 5편)
+
+=== 수요일 ===
+... (같은 형식으로 5편)
+
+=== 목요일 ===
+... (같은 형식으로 5편)
+
+=== 금요일 ===
+... (같은 형식으로 5편)`;
+      }
+
+      /* ── 요일별 분리 파싱 ── */
+      function parseWeeklyResponse(text) {
+        const result = {};
+        /* "=== 월요일 ===" 형태 또는 "【월요일】" 형태로 분리 */
+        const dayPatterns = WEEKDAYS.map(d => ({
+          day: d,
+          pattern: new RegExp(`===\\s*${DAY_NAMES[d]}[^=]*===`, 'i')
+        }));
+
+        /* 각 요일 섹션 위치 탐색 */
+        const positions = [];
+        dayPatterns.forEach(({ day, pattern }) => {
+          const m = text.search(pattern);
+          if (m >= 0) positions.push({ day, pos: m });
+        });
+        positions.sort((a, b) => a.pos - b.pos);
+
+        positions.forEach(({ day, pos }, i) => {
+          const end = positions[i + 1] ? positions[i + 1].pos : text.length;
+          const section = text.slice(pos, end);
+          result[day] = parseCandidates(section);
+        });
+
+        /* 파싱 실패 시 전체 텍스트를 첫 번째 탭에 할당 */
+        if (Object.keys(result).length === 0) {
+          result[1] = parseCandidates(text);
+        }
+        return result;
+      }
+
+      /* ── 탭 렌더링 ── */
+      function renderTabs() {
+        tabsEl.innerHTML = WEEKDAYS.map(d => {
+          const hasCands = parsedByDay[d] && parsedByDay[d].length > 0;
+          const sel = selections[d] !== undefined;
+          const cls = [
+            'wp-day-tab',
+            d === activeTab ? 'active' : '',
+            sel ? 'done' : '',
+            !hasCands ? 'empty' : ''
+          ].filter(Boolean).join(' ');
+          return `<button class="${cls}" data-day="${d}">${DAY_SHORT[d]}${sel ? ' ✓' : ''}</button>`;
+        }).join('');
+
+        tabsEl.querySelectorAll('.wp-day-tab').forEach(btn => {
+          btn.addEventListener('click', () => {
+            activeTab = parseInt(btn.dataset.day, 10);
+            renderTabs();
+            renderCandidates(activeTab);
+          });
+        });
+      }
+
+      /* ── 후보 카드 렌더링 ── */
+      function renderCandidates(day) {
+        const cands = parsedByDay[day] || [];
+        if (cands.length === 0) {
+          candArea.innerHTML = `<p class="wp-empty-msg">이 요일 후보를 찾을 수 없습니다.<br>AI 답변을 확인하거나 다시 붙여넣어 주세요.</p>`;
+          return;
+        }
+        candArea.innerHTML = cands.map((c, idx) => {
+          const sel = selections[day] === idx;
+          return `<label class="wp-cand-card${sel ? ' selected' : ''}">
+            <input type="radio" name="wp-cand-${day}" value="${idx}" ${sel ? 'checked' : ''} class="wp-cand-radio"/>
+            <div class="wp-cand-body">
+              <div class="wp-cand-title">${c.title}</div>
+              ${c.ihe ? `<span class="wp-cand-ihe type-${TYPE_CLASS[c.ihe] || 'insight'}">${TYPE_ICON[c.ihe] || ''} ${c.ihe}</span>` : ''}
+              ${c.source ? `<div class="wp-cand-meta">출처: ${c.source}</div>` : ''}
+              ${c.outline ? `<div class="wp-cand-outline">${c.outline}</div>` : ''}
+              ${c.iheWhy ? `<div class="wp-cand-why">→ ${c.iheWhy}</div>` : ''}
+            </div>
+          </label>`;
+        }).join('');
+
+        candArea.querySelectorAll('.wp-cand-radio').forEach(radio => {
+          radio.addEventListener('change', () => {
+            selections[day] = parseInt(radio.value, 10);
+            renderTabs();
+            renderCandidates(day);
+            updateSelectStatus();
+          });
+        });
+      }
+
+      function updateSelectStatus() {
+        const done = WEEKDAYS.filter(d => parsedByDay[d] && parsedByDay[d].length > 0 && selections[d] !== undefined).length;
+        const total = WEEKDAYS.filter(d => parsedByDay[d] && parsedByDay[d].length > 0).length;
+        selectSt.textContent = total > 0 ? `${done} / ${total} 요일 선택됨` : '';
+      }
+
+      function showStep1() {
+        step1.style.display = '';
+        step2.style.display = 'none';
+        footer.style.display = 'none';
+      }
+      function showStep2() {
+        step1.style.display = 'none';
+        step2.style.display = '';
+        footer.style.display = '';
       }
 
       function openDrawer() {
-        /* API 키: localStorage에 있으면 placeholder만 표시 */
-        const saved = localStorage.getItem(API_KEY_STORE) || '';
-        if (apiKeyInput) {
-          apiKeyInput.value = '';
-          apiKeyInput.placeholder = saved ? '저장된 키 사용 중 (변경하려면 입력)' : 'Gemini API Key를 입력하세요';
-        }
-        promptArea.value = buildAutoPrompt(activeDay);
-        generatedDataUrl = null;
-        preview.style.display  = 'none';
-        applyBtn.style.display = 'none';
-        statusEl.textContent   = '';
+        selections  = {};
+        parsedByDay = {};
+        activeTab   = 1;
+        pasteArea.value = '';
+        copyStatus.textContent = '';
+        showStep1();
         drawer.classList.add('open');
       }
       function closeDrawer() { drawer.classList.remove('open'); }
@@ -3282,72 +3441,72 @@ ${styleGuide[category] || '이야기의 감정과 주제를 가장 잘 전달하
       closeBtn.addEventListener('click', closeDrawer);
       drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
 
-      genBtn.addEventListener('click', async () => {
-        /* API 키 확인 */
-        const inputKey = apiKeyInput?.value.trim();
-        if (inputKey) localStorage.setItem(API_KEY_STORE, inputKey);
-        const apiKey = localStorage.getItem(API_KEY_STORE);
-        if (!apiKey) { statusEl.textContent = 'Gemini API Key를 입력해 주세요.'; return; }
-
-        const subjectPrompt = promptArea.value.trim();
-        if (!subjectPrompt) { statusEl.textContent = '프롬프트를 입력하세요.'; return; }
-
-        const story    = getDisplayStory(activeDay);
-        const style    = styleSelect.value;
-        const tone     = story.primaryType || null;
-
-        /* 스타일을 프롬프트에 직접 임베드 (서버 방식과 동일 패턴) */
-        const tonePart   = tone ? `, ${IMG_TONE[tone]} mood` : '';
-        const fullPrompt = `${subjectPrompt}, ${IMG_STYLE[style] || IMG_STYLE.mixed}${tonePart}. No text overlay, no watermark, no border.`;
-
-        genBtn.disabled      = true;
-        genBtn.textContent   = '⏳ 생성 중…';
-        statusEl.textContent = 'Gemini Flash에 요청 중…';
-        preview.style.display  = 'none';
-        applyBtn.style.display = 'none';
-
-        try {
-          /* Gemini 이미지 생성 모델 직접 호출 */
-          const model    = 'gemini-2.5-flash-image';
-          const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-          const res = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: fullPrompt }] }],
-              generationConfig: { responseModalities: ['image', 'text'] }
-            })
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
-
-          /* 응답에서 인라인 이미지 데이터 추출 */
-          const parts = data.candidates?.[0]?.content?.parts || [];
-          const imgPart = parts.find(p => p.inlineData);
-          if (!imgPart) throw new Error('이미지 데이터가 없습니다. 프롬프트를 수정해 보세요.');
-
-          const { data: b64, mimeType } = imgPart.inlineData;
-          generatedDataUrl = `data:${mimeType};base64,${b64}`;
-          previewImg.src          = generatedDataUrl;
-          preview.style.display   = 'block';
-          applyBtn.style.display  = 'inline-block';
-          statusEl.textContent    = '✅ 생성 완료 — 적용 버튼을 눌러주세요';
-        } catch (e) {
-          statusEl.textContent = `오류: ${e.message}`;
-        } finally {
-          genBtn.disabled    = false;
-          genBtn.textContent = '✨ 생성';
-        }
+      copyBtn.addEventListener('click', () => {
+        const prompt = buildWeeklyPrompt();
+        navigator.clipboard.writeText(prompt).then(() => {
+          copyStatus.textContent = '✅ 복사됨 — AI 챗봇에 붙여넣기 후 답변을 아래에 붙여넣으세요.';
+        }).catch(() => {
+          /* fallback */
+          const ta = document.createElement('textarea');
+          ta.value = prompt;
+          ta.style.cssText = 'position:fixed;opacity:0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          copyStatus.textContent = '✅ 복사됨';
+        });
       });
 
-      applyBtn.addEventListener('click', () => {
-        if (!generatedDataUrl) return;
-        const staged = loadStaging(activeDay) || {};
-        const story  = { ...(staged.story || {}), image: generatedDataUrl };
-        saveStaging(activeDay, { ...staged, story });
-        renderIllustration(activeDay);
-        statusEl.textContent = '✅ 적용됨';
-        setTimeout(closeDrawer, 900);
+      parseBtn.addEventListener('click', () => {
+        const text = pasteArea.value.trim();
+        if (!text) { copyStatus.textContent = '⚠️ AI 답변을 붙여넣어 주세요.'; return; }
+        parsedByDay = parseWeeklyResponse(text);
+        const total = Object.values(parsedByDay).reduce((s, a) => s + a.length, 0);
+        if (total === 0) {
+          copyStatus.textContent = '⚠️ 후보를 파싱할 수 없습니다. 형식을 확인하거나 전체 답변을 붙여넣어 주세요.';
+          return;
+        }
+        /* 첫 번째 유효 탭으로 이동 */
+        activeTab = WEEKDAYS.find(d => parsedByDay[d] && parsedByDay[d].length > 0) || 1;
+        showStep2();
+        renderTabs();
+        renderCandidates(activeTab);
+        updateSelectStatus();
+      });
+
+      backBtn.addEventListener('click', showStep1);
+
+      saveBtn.addEventListener('click', () => {
+        const savedDays = [];
+        WEEKDAYS.forEach(d => {
+          const idx = selections[d];
+          if (idx === undefined || !parsedByDay[d]) return;
+          const cand = parsedByDay[d][idx];
+          if (!cand) return;
+          /* staging에 후보 데이터 저장 (요약 정보 — 큐레이터가 이후 완성본 교체 가능) */
+          const existing = loadStaging(d) || {};
+          const storyPatch = {
+            ...(existing.story || {}),
+            _wpCandidate: {
+              title:   cand.title,
+              source:  cand.source,
+              ihe:     cand.ihe,
+              iheWhy:  cand.iheWhy,
+              outline: cand.outline,
+              savedAt: new Date().toISOString()
+            }
+          };
+          saveStaging(d, { ...existing, story: storyPatch });
+          savedDays.push(DAY_SHORT[d]);
+        });
+
+        if (savedDays.length === 0) {
+          selectSt.textContent = '⚠️ 선택된 후보가 없습니다.';
+          return;
+        }
+        selectSt.textContent = `✅ ${savedDays.join('·')} 저장됨`;
+        setTimeout(closeDrawer, 1200);
       });
     })();
 
