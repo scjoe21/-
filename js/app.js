@@ -3617,7 +3617,49 @@ ${'═'.repeat(50)}
       }
     })();
 
-    setActiveDay(activeDay);
+    /* ── 날짜 기준 초기 글 선택 ──────────────────────────────
+       STORIES[activeDay].publishedDate가 오늘 이후(미래)이면
+       STORY_ARCHIVE에서 오늘 이전의 가장 최근 이야기를 찾아 표시한다.
+    ────────────────────────────────────────────────────── */
+    (function selectInitialStory() {
+      /* 'YYYY년 M월 D일' → Date (자정 기준) */
+      function parsePD(str) {
+        if (!str) return null;
+        const m = str.match(/^(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일$/);
+        if (!m) return null;
+        return new Date(parseInt(m[1]), parseInt(m[2]) - 1, parseInt(m[3]));
+      }
+
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+
+      /* 현재 activeDay 글의 publishedDate 확인 */
+      const curStory = (loadStaging(activeDay) || {}).story
+        ? { ...STORIES[activeDay], ...(loadStaging(activeDay).story) }
+        : STORIES[activeDay];
+      const curDate = parsePD(curStory && curStory.publishedDate);
+
+      /* publishedDate가 없거나 오늘 이전이면 그냥 현재 day 표시 */
+      if (!curDate || curDate <= today) { setActiveDay(activeDay); return; }
+
+      /* publishedDate가 미래 → STORY_ARCHIVE에서 최근 글 탐색 */
+      let bestWeekIdx = -1, bestDay = -1, bestDate = null;
+      (STORY_ARCHIVE || []).forEach((week, weekIdx) => {
+        Object.keys(week.stories || {}).forEach(d => {
+          const dt = parsePD(week.stories[d].publishedDate);
+          if (dt && dt <= today) {
+            if (!bestDate || dt > bestDate) {
+              bestDate = dt; bestWeekIdx = weekIdx; bestDay = Number(d);
+            }
+          }
+        });
+      });
+
+      if (bestWeekIdx >= 0) {
+        setActiveArchiveStory(bestWeekIdx, bestDay);
+      } else {
+        setActiveDay(activeDay);
+      }
+    })();
   }
 
   document.addEventListener('DOMContentLoaded', init);
