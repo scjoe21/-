@@ -23,7 +23,9 @@
       "WebFetch(domain:fastly.picsum.photos)",
       "Bash(start:*)",
       "Bash(gh api:*)",
-      "Bash(gh run:*)"
+      "Bash(gh run:*)",
+      "Bash(python -c ' *)",
+      "Bash(python update_stories.py)"
     ]
   }
 }
