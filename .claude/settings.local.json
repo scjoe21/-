@@ -25,7 +25,9 @@
       "Bash(gh api:*)",
       "Bash(gh run:*)",
       "Bash(python -c ' *)",
-      "Bash(python update_stories.py)"
+      "Bash(python update_stories.py)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
