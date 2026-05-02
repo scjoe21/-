@@ -467,35 +467,20 @@
     const season = getSeason(month);
     const obj    = getCurrentObject();
     const objSvg = obj ? (OBJECT_SVGS[obj.name] || '') : '';
-    const svgHtml = objSvg
+
+    const photoSrc = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
+    const fallback = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
+
+    /* CSS background-image로 즉시 렌더 — 비동기 없이 깜박임 제거 */
+    /* 사진 URL이 깨지면 두 번째 레이어(gradient)가 보임 */
+    el.style.backgroundImage    = `url('${photoSrc}'), ${fallback}`;
+    el.style.backgroundSize     = 'cover, 100% 100%';
+    el.style.backgroundPosition = 'center 60%, center';
+    el.style.backgroundRepeat   = 'no-repeat, no-repeat';
+
+    el.innerHTML = objSvg
       ? `<svg class="season-strip-obj" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">${objSvg}</svg>`
       : '';
-
-    /* 사진 선로드 후 DOM을 한 번에 교체 — innerHTML 초기화 깜박임 제거 */
-    const photoImg = new Image();
-
-    const commit = (withPhoto) => {
-      el.innerHTML = svgHtml;
-      el.style.display = '';
-      if (withPhoto) {
-        el.style.background = '';
-        photoImg.className = 'season-strip-photo';
-        photoImg.alt = `${month}월 풍경`;
-        el.insertAdjacentElement('afterbegin', photoImg);
-      } else {
-        el.style.background = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
-      }
-    };
-
-    photoImg.onload  = () => commit(true);
-    photoImg.onerror = () => commit(false);
-    photoImg.src = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
-
-    /* 첫 렌더(비어있을 때)에만 즉시 그라디언트 — 사진 로드 대기 중 빈 화면 방지 */
-    if (!el.children.length) {
-      el.style.background = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
-      el.style.display = '';
-    }
   }
 
   function renderDateSeason(day) {
