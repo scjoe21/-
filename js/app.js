@@ -425,18 +425,31 @@
   function renderSidebarBottomImg() {
     const img = document.getElementById('sidebarBottomImg');
     if (!img) return;
-    /* 이전 오류로 숨겨진 경우 복원 */
     if (img.parentElement) img.parentElement.style.display = '';
     const month = new Date().getMonth() + 1;
     const monthStr = String(month).padStart(2, '0');
-    /* onerror를 src 설정 전에 먼저 등록 (경합 방지) */
-    img.onerror = () => {
-      /* 2순위: 기차 그림 (train-sidebar.webp) */
-      img.onerror = () => { img.parentElement.style.display = 'none'; };
-      img.src = 'images/train-sidebar.webp';
+    const primarySrc  = `images/sidebar-bottom-${monthStr}.webp`;
+    const fallbackSrc = 'images/train-sidebar.webp';
+
+    /* 이미 동일 src 표시 중이면 건너뜀 (깜박임 방지) */
+    if (img.dataset.loadedSrc === primarySrc || img.dataset.loadedSrc === fallbackSrc) return;
+
+    /* 선로드(preload) 후 한 번에 교체 — 공백 구간 없이 표시 */
+    const probe1 = new Image();
+    probe1.onload = () => {
+      img.src = primarySrc;
+      img.dataset.loadedSrc = primarySrc;
     };
-    /* 1순위: 로컬 월별 파일 (images/sidebar-bottom-MM.webp) */
-    img.src = `images/sidebar-bottom-${monthStr}.webp`;
+    probe1.onerror = () => {
+      const probe2 = new Image();
+      probe2.onload = () => {
+        img.src = fallbackSrc;
+        img.dataset.loadedSrc = fallbackSrc;
+      };
+      probe2.onerror = () => { img.parentElement.style.display = 'none'; };
+      probe2.src = fallbackSrc;
+    };
+    probe1.src = primarySrc;
   }
 
   /* 계절별 그라디언트 — Unsplash 사진 로드 실패 시 폴백 */
@@ -453,33 +466,36 @@
     const month  = new Date().getMonth() + 1;
     const season = getSeason(month);
     const obj    = getCurrentObject();
-
-    /* 오브제 SVG 소품 */
     const objSvg = obj ? (OBJECT_SVGS[obj.name] || '') : '';
+    const svgHtml = objSvg
+      ? `<svg class="season-strip-obj" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">${objSvg}</svg>`
+      : '';
 
-    /* 초기화 */
-    el.innerHTML = '';
-    el.style.display = '';
-    /* 계절 그라디언트를 즉시 표시 — 사진 로드 실패해도 항상 보임 */
-    el.style.background = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
-
-    /* SVG 오브제 오버레이 (사진/그라디언트 위에) */
-    if (objSvg) {
-      el.insertAdjacentHTML('beforeend',
-        `<svg class="season-strip-obj" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">${objSvg}</svg>`
-      );
-    }
-
-    /* 사진 로드 시도: 성공하면 그라디언트를 교체 */
+    /* 사진 선로드 후 DOM을 한 번에 교체 — innerHTML 초기화 깜박임 제거 */
     const photoImg = new Image();
-    photoImg.className = 'season-strip-photo';
-    photoImg.alt = `${month}월 풍경`;
-    photoImg.onload = () => {
-      el.style.background = '';
-      el.insertAdjacentElement('afterbegin', photoImg);
+
+    const commit = (withPhoto) => {
+      el.innerHTML = svgHtml;
+      el.style.display = '';
+      if (withPhoto) {
+        el.style.background = '';
+        photoImg.className = 'season-strip-photo';
+        photoImg.alt = `${month}월 풍경`;
+        el.insertAdjacentElement('afterbegin', photoImg);
+      } else {
+        el.style.background = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
+      }
     };
-    /* 로드 실패 시: 이미 설정된 그라디언트 유지 (별도 처리 불필요) */
+
+    photoImg.onload  = () => commit(true);
+    photoImg.onerror = () => commit(false);
     photoImg.src = MONTH_PHOTOS[month] || MONTH_PHOTOS[1];
+
+    /* 첫 렌더(비어있을 때)에만 즉시 그라디언트 — 사진 로드 대기 중 빈 화면 방지 */
+    if (!el.children.length) {
+      el.style.background = SEASON_GRADIENTS[season] || SEASON_GRADIENTS.spring;
+      el.style.display = '';
+    }
   }
 
   function renderDateSeason(day) {
