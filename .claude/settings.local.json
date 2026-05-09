@@ -29,7 +29,9 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
-      "Bash(gh repo *)"
+      "Bash(gh repo *)",
+      "Bash(python -m http.server 8080)",
+      "PowerShell(Start-Process \"http://localhost:8080\")"
     ]
   }
 }
