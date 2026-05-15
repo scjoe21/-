@@ -32,7 +32,9 @@
       "Bash(gh repo *)",
       "Bash(python -m http.server 8080)",
       "PowerShell(Start-Process \"http://localhost:8080\")",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(fly auth *)",
+      "Bash(fly --version)"
     ]
   }
 }
