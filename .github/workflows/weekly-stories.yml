@@ -43,14 +43,14 @@ jobs:
       - name: Verify API key only
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'verify'
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.HUMANZEST }}
           GEN_MODEL: claude-sonnet-4-6
         run: python generate_week.py --verify-key
 
       - name: Generate next week into NEXT_WEEK_STORIES
         if: github.event_name != 'workflow_dispatch' || inputs.mode == 'run'
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.HUMANZEST }}
           GEN_MODEL: claude-sonnet-4-6
         run: python generate_week.py
 
