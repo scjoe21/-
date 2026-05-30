@@ -205,6 +205,21 @@ def main():
         print("ERROR: ANTHROPIC_API_KEY 가 설정되지 않았습니다.", file=sys.stderr)
         sys.exit(1)
 
+    # 키 검증 전용 모드 — 파일 변경 없이 최소 API 호출로 키 유효성만 확인
+    if "--verify-key" in sys.argv:
+        try:
+            import anthropic
+        except ImportError:
+            print("ERROR: pip install anthropic", file=sys.stderr)
+            sys.exit(1)
+        client = anthropic.Anthropic(api_key=key)
+        msg = client.messages.create(
+            model=MODEL, max_tokens=8,
+            messages=[{"role": "user", "content": "Reply with exactly: OK"}],
+        )
+        print(f"API 키 정상 (model={MODEL}, 응답='{msg.content[0].text.strip()}')")
+        return
+
     content = DATA_JS.read_text(encoding="utf-8")
     b, e = next_block_bounds(content)
     old_region = content[b:e]

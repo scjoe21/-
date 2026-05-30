@@ -6,7 +6,15 @@ name: 주간 이야기 자동 생성
 on:
   schedule:
     - cron: '0 21 * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '실행 모드'
+        type: choice
+        default: run
+        options:
+          - run       # 정상: 다음 주 생성(필요 시)
+          - verify    # 키 검증만 (파일 변경 없음)
 
 permissions:
   contents: write
@@ -32,13 +40,22 @@ jobs:
       - name: Install deps
         run: pip install anthropic
 
+      - name: Verify API key only
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'verify'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEN_MODEL: claude-sonnet-4-6
+        run: python generate_week.py --verify-key
+
       - name: Generate next week into NEXT_WEEK_STORIES
+        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'run'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEN_MODEL: claude-sonnet-4-6
         run: python generate_week.py
 
       - name: Commit & push if changed
+        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'run'
         run: |
           if git diff --quiet -- js/data.js; then
             echo "변경 없음 — 이미 이번 타깃 주가 채워져 있음. 종료."
