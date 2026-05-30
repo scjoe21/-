@@ -16,8 +16,9 @@
   const jsDay   = new Date().getDay();
   const todayKey = (jsDay >= 1 && jsDay <= 6) ? jsDay : 6;
 
-  /* 순차 게재 — 새 요일 추가 시 여기에만 추가하면 됨 */
-  const ACTIVE_DAYS = [1, 2, 3, 4, 5, 6];
+  /* 순차 게재 — 실제로 STORIES에 들어 있는 요일만 활성화
+     (예: 토요일 에세이가 아직 비어 있으면 자동으로 제외되어 화면이 깨지지 않음) */
+  const ACTIVE_DAYS = [1, 2, 3, 4, 5, 6].filter(d => STORIES[d]);
 
   /* 오늘 요일이 게재 중이면 오늘, 아니면 가장 최근 게재 요일 */
   const _defaultDay = ACTIVE_DAYS.includes(todayKey)
