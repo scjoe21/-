@@ -1,0 +1,51 @@
+name: 주간 이야기 자동 생성
+
+# 매일 06:00 KST(21:00 UTC) 실행하되, generate_week.py 가 멱등이라
+# 실제 생성은 '주 1회'만 일어난다(이미 채워진 주는 API 호출 없이 종료).
+# 매일 도는 이유: 어느 하루 실패해도 다음날이 자동으로 따라잡기 위함.
+on:
+  schedule:
+    - cron: '0 21 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-stories
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install anthropic
+
+      - name: Generate next week into NEXT_WEEK_STORIES
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEN_MODEL: claude-sonnet-4-6
+        run: python generate_week.py
+
+      - name: Commit & push if changed
+        run: |
+          if git diff --quiet -- js/data.js; then
+            echo "변경 없음 — 이미 이번 타깃 주가 채워져 있음. 종료."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add js/data.js
+          git commit -m "자동 생성: 다음 주 이야기 (generate_week.py)"
+          git push

@@ -1312,9 +1312,9 @@ const CURRENT_WEEK_STORIES = {
   },
 };
 
+/* @AUTO-WEEK:BEGIN — generate_week.py 가 이 블록 전체를 매주 자동 교체. 수동 편집 시 마커 유지. */
 /* ──────────────────────────────────────────────────────────
-   NEXT_WEEK_STORIES  ·  다음 주 예고 (다음 주 글을 여기에 채운 뒤,
-   주가 바뀌면 stories를 STORIES로 옮기고 현재 STORIES는 STORY_ARCHIVE로 이동시킨다.)
+   NEXT_WEEK_STORIES  ·  다음 주(게재 전) 한 주치. 직전 일요일에 자동 게재됨.
    ────────────────────────────────────────────────────────── */
 const NEXT_WEEK_STORIES = {
   weekLabel: '2026년 6월 1주 (6/1–6/6)',
@@ -1528,15 +1528,16 @@ const NEXT_WEEK_STORIES = {
 
   }
 };
+/* @AUTO-WEEK:END */
 
 /* ──────────────────────────────────────────────────────────
-   주간 자동 게재
-   다음 주(NEXT_WEEK_STORIES) 글은 그 주 시작(월요일) "직전 일요일"부터
-   자동으로 게재된다. 그 전까지는 이번 주(CURRENT_WEEK_STORIES)가 보인다.
-   다음 주가 게재되면 이번 주는 자동으로 지난 이야기(STORY_ARCHIVE)로 내려간다.
-   → 매주 손으로 옮길 필요 없이, 다음 주 글을 NEXT_WEEK_STORIES에 채워만 두면 된다.
+   주간 자동 게재 (연속 롤링)
+   • NEXT_WEEK_STORIES = 아직 게재 전인 "다음 주" 한 주치 (생성기가 매주 채움).
+   • PAST_WEEKS        = 이미 게재된 주들 (newest first).
+   다음 주 글은 그 주 시작(월요일) "직전 일요일" 00:00부터 자동 게재된다.
+   매주 generate_week.py 가 새 주를 NEXT_WEEK_STORIES에 채우고, 직전 NEXT는
+   PAST_WEEKS 맨 앞으로 옮긴다. 손으로 옮길 필요 없음.
    ────────────────────────────────────────────────────────── */
-const CURRENT_WEEK = { weekLabel: '2026년 5월 4주 (5/25–5/30)', weekStart: '2026-05-25' };
 
 /* weekStart(월요일) 하루 전 일요일 00:00부터 게재 */
 function _isLive(weekStart) {
@@ -1548,28 +1549,24 @@ function _isLive(weekStart) {
   return now >= release;
 }
 
-/* 다음 주 글이 채워져 있고 게재일(직전 일요일)이 지났으면 다음 주를 활성화 */
+/* 다음 주 글이 채워져 있고 게재일(직전 일요일)이 지났으면 활성화 */
 const _nextHasStories =
   typeof NEXT_WEEK_STORIES !== 'undefined' && NEXT_WEEK_STORIES &&
   NEXT_WEEK_STORIES.stories && Object.keys(NEXT_WEEK_STORIES.stories).length > 0;
 const _nextLive = _nextHasStories && _isLive(NEXT_WEEK_STORIES.weekStart);
 
-/* 앱이 표시하는 이번 주 = (게재일 지난) 다음 주 또는 이번 주 */
-const STORIES = _nextLive ? NEXT_WEEK_STORIES.stories : CURRENT_WEEK_STORIES;
-
 /* ──────────────────────────────────────────────────────────
-   STORY_ARCHIVE  ·  지난 주 이야기 모음
-   새 주 시작 시: 다음 주 글을 NEXT_WEEK_STORIES에 채워 두면 직전 일요일에
-   자동 게재되고, 이번 주는 아래 _nextLive 분기로 자동 편입된다.
-   형식: { weekLabel: '2026년 3월 첫째 주', stories: { 1:{...}, 2:{...}, ... } }
+   PAST_WEEKS  ·  이미 게재된 주들 (newest first)
+   생성기가 매주 직전 NEXT를 이 배열 맨 앞에 추가한다.
+   형식: { weekLabel, weekStart, stories: { 1:{...}, …, 5:{...} } }
    ────────────────────────────────────────────────────────── */
-const STORY_ARCHIVE = [
-  /* 다음 주가 게재되면 이번 주(5/25–5/30)가 맨 앞 지난 이야기로 내려간다 */
-  ...(_nextLive ? [{
-    weekLabel: CURRENT_WEEK.weekLabel,
-    weekStart: CURRENT_WEEK.weekStart,
+const PAST_WEEKS = [
+  /* @AUTO-PAST:HEAD — generate_week.py 가 직전 NEXT 주를 이 줄 바로 아래에 추가 */
+  {
+    weekLabel: '2026년 5월 4주 (5/25–5/30)',
+    weekStart: '2026-05-25',
     stories: CURRENT_WEEK_STORIES,
-  }] : []),
+  },
   {
     weekLabel: '2026년 5월 3주 (5/18–5/23)',
     weekStart: '2026-05-18',
@@ -4020,6 +4017,15 @@ const STORY_ARCHIVE = [
     }
   }
 ];
+
+/* ──────────────────────────────────────────────────────────
+   표시용 계산 — 다음 주가 게재일(직전 일요일)을 지났으면 맨 앞에 끼운다.
+   STORIES        = 현재 게재 중인 주(가장 최신 게재 주)의 stories
+   STORY_ARCHIVE  = 그 뒤의 지난 주들 (앱의 '지난 이야기' 섹션)
+   ────────────────────────────────────────────────────────── */
+const _published = _nextLive ? [NEXT_WEEK_STORIES].concat(PAST_WEEKS) : PAST_WEEKS.slice();
+const STORIES = _published[0].stories;
+const STORY_ARCHIVE = _published.slice(1);
 
 /* ──────────────────────────────────────────────────────────
    SOURCES  ·  69개 소스 탐색 풀
