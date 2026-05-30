@@ -816,7 +816,8 @@ const ILLUSTRATIONS = {
 };
 
 /* ── Stories ── */
-const STORIES = {
+/* (지난 주 5/18–5/23 — STORY_ARCHIVE 로 이동됨) */
+const WEEK_MAY3_STORIES = {
 
   /* ═══ 월요일 — 역사·감동 (PRIMARY: 감동) — 5·18 광주민주화운동 46주년 ═══ */
   1: {
@@ -1064,14 +1065,9 @@ const STORIES = {
 };
 
 /* ──────────────────────────────────────────────────────────
-   NEXT_WEEK_STORIES  ·  다음 주 예고 (5/25–5/30)
-   주가 바뀌면 이 블록의 stories를 STORIES로 옮기고,
-   현재 STORIES는 STORY_ARCHIVE로 이동시킨다.
+   STORIES  ·  이번 주 이야기 (5/25–5/30, 2026년 5월 4주)
    ────────────────────────────────────────────────────────── */
-const NEXT_WEEK_STORIES = {
-  weekLabel: '2026년 5월 4주 (5/25–5/30)',
-  weekStart: '2026-05-25',
-  stories: {
+const STORIES = {
 
   /* ═══ 월요일 — 역사·통찰 (PRIMARY: 통찰) ═══ */
   1: {
@@ -1314,7 +1310,16 @@ const NEXT_WEEK_STORIES = {
     curatorNote: '펭귄에게 외친 한마디가 결국 자기에게 돌아옵니다. 한 세대가 다음 세대에게 했던 말이, 사실은 자기 세대가 받았어야 했던 말이었다는 깨달음. "빨리빨리"의 자리에 "좀 늦어도 괜찮아"를 놓을 수 있는 세상은, 누구도 펭귄을 혼내지 않는 세상이기도 합니다.',
     publishedDate: '2026년 5월 30일',
   },
+};
 
+/* ──────────────────────────────────────────────────────────
+   NEXT_WEEK_STORIES  ·  다음 주 예고 (다음 주 글을 여기에 채운 뒤,
+   주가 바뀌면 stories를 STORIES로 옮기고 현재 STORIES는 STORY_ARCHIVE로 이동시킨다.)
+   ────────────────────────────────────────────────────────── */
+const NEXT_WEEK_STORIES = {
+  weekLabel: '2026년 6월 1주 (6/1–6/6)',
+  weekStart: '2026-06-01',
+  stories: {
   }
 };
 
@@ -1324,6 +1329,11 @@ const NEXT_WEEK_STORIES = {
    형식: { weekLabel: '2026년 3월 첫째 주', stories: { 1:{...}, 2:{...}, ... } }
    ────────────────────────────────────────────────────────── */
 const STORY_ARCHIVE = [
+  {
+    weekLabel: '2026년 5월 3주 (5/18–5/23)',
+    weekStart: '2026-05-18',
+    stories: WEEK_MAY3_STORIES,
+  },
   {
     weekLabel: '2026년 5월 2주 (5/11–5/16)',
     weekStart: '2026-05-11',
