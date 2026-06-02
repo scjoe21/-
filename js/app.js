@@ -1833,10 +1833,11 @@ ${'═'.repeat(50)}
 
     /* 이번 주 이야기 목록 구성
        publishedDate가 있으면 사용, 없으면 "이번 주" */
-    const thisWeekItems = [1, 2, 3, 4, 5, 6].map(d => {
+    const thisWeekItems = ACTIVE_DAYS.map(d => {
       /* activeArchive 상태와 무관하게 항상 이번 주 STORIES를 사용 */
       const staged = loadStaging(d);
       const story  = (staged && staged.story) ? { ...STORIES[d], ...staged.story } : STORIES[d];
+      if (!story) return null;  /* 해당 요일 글이 없으면(예: 토요일 미게재) 건너뜀 */
       /* publishedDate가 'YYYY년 M월 D일' 형식이면 그대로 사용 (메인 화면과 동일) */
       const pdMatch = (story.publishedDate || '').match(/^(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일$/);
       let dt;
@@ -1859,7 +1860,7 @@ ${'═'.repeat(50)}
         dowKr: WEEKDAY_LABEL[d],
         published: story.publishedDate || null
       };
-    });
+    }).filter(Boolean);
 
     /* 히스토리에서 과거 이야기 수집 */
     const history = loadHistory ? loadHistory() : {};
