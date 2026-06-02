@@ -41,7 +41,8 @@
       "Bash(gh secret *)",
       "Bash(python -c \"import ast; ast.parse\\(open\\('generate_week.py',encoding='utf-8'\\).read\\(\\)\\); print\\('py OK'\\)\")",
       "Bash(python -c \"import yaml,sys; yaml.safe_load\\(open\\('.github/workflows/weekly-stories.yml',encoding='utf-8'\\)\\); print\\('yaml OK'\\)\")",
-      "Bash(gh workflow *)"
+      "Bash(gh workflow *)",
+      "Bash(python -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/weekly-stories.yml',encoding='utf-8'\\)\\); print\\('yaml OK'\\)\")"
     ]
   }
 }
