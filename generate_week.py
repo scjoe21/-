@@ -327,18 +327,30 @@ def main():
         new_content = new_content[:line_end] + entry + new_content[line_end:]
         print(f"  · 직전 주({old_ws})를 PAST_WEEKS 로 이동")
 
-    # ── node --check 로 검증 후에만 저장
+    # ── 저장 전 2단계 검증: (1) node --check 문법  (2) 렌더 스모크(화면 안 깨짐)
+    #    하나라도 실패하면 저장하지 않음 → 깨진 결과가 배포되는 일이 없다.
     with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False, encoding="utf-8") as tf:
         tf.write(new_content)
         tmp = tf.name
     try:
-        r = subprocess.run(["node", "--check", tmp], capture_output=True, text=True)
+        r = subprocess.run(["node", "--check", tmp],
+                           capture_output=True, text=True, encoding="utf-8")
         if r.returncode != 0:
-            print("ERROR: 생성 결과가 유효한 JS 가 아닙니다. 저장하지 않음.\n" + r.stderr,
+            print("ERROR: 생성 결과가 유효한 JS 가 아닙니다. 저장하지 않음.\n" + (r.stderr or ""),
                   file=sys.stderr)
             sys.exit(2)
+        smoke = ROOT / "tools" / "smoke_test.js"
+        if smoke.exists():
+            # 새 주가 '게재 중'인 시점(weekStart)을 가정해 실제 렌더 예외가 없는지 확인
+            r2 = subprocess.run(["node", str(smoke), tmp, mon.isoformat()],
+                               capture_output=True, text=True, encoding="utf-8", cwd=str(ROOT))
+            print("  " + (r2.stdout or r2.stderr or "").strip())
+            if r2.returncode != 0:
+                print("ERROR: 렌더 스모크 실패 — 사이트가 깨질 수 있어 저장/배포를 중단합니다.\n"
+                      + (r2.stderr or ""), file=sys.stderr)
+                sys.exit(3)
     except FileNotFoundError:
-        print("  (node 없음 — 구문 검증 건너뜀)")
+        print("  (node 없음 — 검증 건너뜀)")
     finally:
         try: os.unlink(tmp)
         except OSError: pass

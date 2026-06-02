@@ -54,6 +54,10 @@ jobs:
           GEN_MODEL: claude-sonnet-4-6
         run: python generate_week.py
 
+      - name: Render smoke test (배포 전 화면 안 깨짐 확인)
+        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'run'
+        run: node tools/smoke_test.js js/data.js
+
       - name: Commit & push if changed
         if: github.event_name != 'workflow_dispatch' || inputs.mode == 'run'
         run: |
