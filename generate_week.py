@@ -91,7 +91,7 @@ def parse_current_next(region: str):
 # ──────────────────────────────────────────────────────────
 # Claude 호출 — 하루치 1편 (풀 스키마)
 # ──────────────────────────────────────────────────────────
-def generate_story(client, day: int, primary: str, avoid: list) -> dict:
+def generate_story(client, day: int, primary: str, avoid: list, extra: str = "") -> dict:
     avoid_str = ", ".join(avoid[-220:])  # 너무 길면 최근 것 위주
     prompt = f"""당신은 한국어 뉴스레터 '통찰·유머·감동'의 큐레이터입니다.
 '{DAY_NAME[day]}'에 실을 역사·인물 실화 1편을 작성하세요. 주(主) 유형은 '{primary}'입니다.
@@ -102,13 +102,19 @@ def generate_story(client, day: int, primary: str, avoid: list) -> dict:
 - 사실과 출처가 검증 가능해야 함. 확실치 않으면 다른 소재를 고르세요(날짜·수치·인용은 실제와 다르면 안 됨).
 
 [추가 기준 — 반드시 함께 충족]
-- '아주 유명한' 이야기(예: 누구나 아는 위인전 단골 일화)는 피하세요. 덜 알려졌지만 단단한 실화로.
+- '아주 유명한' 이야기는 피하세요. 누구나 아는 교과서·위인전 단골 인물(예: 링컨·간디·아인슈타인·뉴턴·헬렌 켈러급)과 그 통속적 일화는 금지. 덜 알려졌지만 단단한 실화로.
 - 기괴하거나 엽기적·잔혹한 소재는 피하세요.
 - 읽는 사람에게 '용기와 힘'을 주는 이야기여야 합니다. 따뜻함·위트가 살아 있으면서 결국 일어설 힘을 주는 결.
 
+[정확도 규칙 — 어기면 실패]
+- title 의 인물명은 credit(출처)에 적은 실제 인물과 반드시 동일 인물이어야 함. 다른 사람 이름을 제목에 쓰지 말 것.
+- 인물명·지명·연도·수치는 실제와 일치해야 함(예: 거주 도시, 출판 연도). 한 글자라도 불확실하면 단정하지 말고 그 사실을 빼거나 다른 소재로.
+- 본문에 직접 인용("…")을 넣을 때는 실제로 검증된 말만. 지어낸 인용 금지. 불확실하면 따옴표 없이 서술로.
+- "A가 아니라 B다" 식으로 엉뚱한 유명인과 비교하며 시작하지 말 것. 인물을 곧바로 정확히 소개할 것.
+
 [중복 금지] 아래 인물/이야기는 이미 사용했으니 절대 겹치지 마세요(같은 인물의 다른 일화도 금지):
 {avoid_str}
-
+{extra}
 [형식] 아래 JSON 객체 하나만 출력. 코드블록·설명 금지.
 {{
   "title": "인물의 ~ 형식의 짧은 제목",
@@ -134,6 +140,54 @@ def generate_story(client, day: int, primary: str, avoid: list) -> dict:
     obj = json.loads(raw[s:e])
     obj["primaryType"] = primary
     return obj
+
+
+def fact_check(client, o: dict) -> dict:
+    """2차 사실검증 — 제목·출처 인물 일치, 명백한 사실 오류, 날조 인용, 과도한 유명세를 점검."""
+    body = "\n".join(o.get("body", []))
+    prompt = f"""다음은 한국어 뉴스레터에 실릴 역사 인물 실화입니다. 사실 검증만 하세요.
+
+제목: {o.get('title','')}
+출처: {o.get('credit','')}
+본문:
+{body}
+
+아래를 점검해 문제가 있으면 구체적으로 적으세요.
+1. 제목의 인물명이 출처의 실제 인물과 다른가? (다른 사람 이름이 제목에 있는가)
+2. 명백한 사실 오류가 있는가? (인물명·지명·연도·수치·사건 — 예: 실제 거주지가 다름)
+3. 날조됐을 가능성이 높은 직접 인용("…")이 있는가?
+4. 누구나 아는 교과서·위인전 단골(아주 유명한) 인물·일화인가?
+
+JSON만 출력(코드블록 금지): {{"ok": true/false, "problems": ["문제1","문제2"]}}
+사소한 표현은 넘어가고, 위 1~3에 해당하는 분명한 오류가 있을 때만 ok=false."""
+    msg = client.messages.create(
+        model=MODEL, max_tokens=800,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    raw = msg.content[0].text.strip()
+    try:
+        s, e = raw.find("{"), raw.rfind("}") + 1
+        return json.loads(raw[s:e])
+    except Exception:
+        return {"ok": True, "problems": []}   # 파싱 실패 시 통과(생성 자체는 막지 않음)
+
+
+def generate_verified(client, day: int, primary: str, avoid: list) -> dict:
+    """생성 → 사실검증 → 문제 있으면 1회 재생성. 최선본 반환."""
+    o = generate_story(client, day, primary, avoid)
+    chk = fact_check(client, o)
+    if chk.get("ok", True):
+        return o
+    problems = "; ".join(chk.get("problems", []))
+    print(f"    ⚠ 검증 지적: {problems} → 재생성", flush=True)
+    note = ("[직전 시도의 문제 — 반드시 교정]\n- " +
+            "\n- ".join(chk.get("problems", [])) + "\n")
+    o2 = generate_story(client, day, primary, avoid, extra=note)
+    chk2 = fact_check(client, o2)
+    if not chk2.get("ok", True):
+        print(f"    ⚠ 재생성 후에도 지적 남음: {'; '.join(chk2.get('problems', []))} (재생성본 채택)",
+              flush=True)
+    return o2
 
 
 # ──────────────────────────────────────────────────────────
@@ -251,8 +305,8 @@ def main():
     parts = []
     for day in range(1, 6):
         primary = PRIMARY_BY_DAY[day]
-        print(f"  · {DAY_NAME[day]} ({primary}) 생성 중…", flush=True)
-        o = generate_story(client, day, primary, avoid)
+        print(f"  · {DAY_NAME[day]} ({primary}) 생성·검증 중…", flush=True)
+        o = generate_verified(client, day, primary, avoid)
         avoid.append(o["title"])  # 이번 주 안에서도 중복 방지
         parts.append(story_to_js(day, mon, o))
     new_block = build_next_block(mon, "\n\n".join(parts))
