@@ -5,7 +5,7 @@
 매주 1회 실행. 월~금 5편(실화 인물 일화)을 Claude로 자동 생성해
 js/data.js 의 NEXT_WEEK_STORIES(마커 @AUTO-WEEK)를 통째로 교체한다.
 직전에 채워져 있던 주는 PAST_WEEKS(@AUTO-PAST:HEAD) 맨 앞으로 옮긴다.
-표시 시점은 data.js 의 _isLive() 가 처리 → 직전 일요일 자동 게재.
+표시 시점은 data.js 의 _isLive() 가 처리 → 직전 토요일 0시 자동 게재.
 
 선택(번호 고르기) 단계 없음. 토요일(6) 없음 — 월~금만.
 
@@ -356,7 +356,7 @@ def main():
         except OSError: pass
 
     DATA_JS.write_text(new_content, encoding="utf-8")
-    print(f"\n완료: {week_label(mon)} 5편을 NEXT_WEEK_STORIES 에 기록 → 직전 일요일 자동 게재")
+    print(f"\n완료: {week_label(mon)} 5편을 NEXT_WEEK_STORIES 에 기록 → 직전 토요일 0시 자동 게재")
 
 
 if __name__ == "__main__":

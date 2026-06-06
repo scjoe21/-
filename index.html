@@ -11,62 +11,6 @@
 </head>
 <body class="day-1">
 
-  <!-- ===== CURATOR MODE BADGE (hidden by default) ===== -->
-  <div id="curatorBadge" role="status" aria-live="polite"></div>
-
-  <!-- Floating curator action buttons (hidden until curator mode) -->
-  <div id="curatorFab" style="display:none">
-    <button id="openCuratorNoteEdit" title="큐레이터란 작성">✏️</button>
-    <button id="openWeeklyPlan" title="다음주 편성">📅</button>
-  </div>
-
-  <!-- ===== WEEKLY PLAN DRAWER ===== -->
-  <div id="weeklyPlanDrawer" role="dialog" aria-modal="true" aria-label="다음주 편성">
-    <div class="weekly-plan-panel">
-      <div class="curator-note-edit-header">
-        <span class="curator-note-edit-title">📅 다음주 편성</span>
-        <button id="weeklyPlanClose" aria-label="닫기">✕</button>
-      </div>
-      <div class="weekly-plan-body">
-        <!-- Step 1: 프롬프트 생성 & 붙여넣기 -->
-        <div class="weekly-plan-step" id="wpStep1">
-          <p class="curator-note-edit-hint">AI에게 다음주 이야기 후보를 요청하세요. 프롬프트를 복사해 AI 챗봇에 붙여넣고, 답변을 아래에 붙여넣으세요.</p>
-          <button id="wpCopyPrompt" class="wp-outline-btn">📋 AI 추천 프롬프트 복사</button>
-          <p id="wpCopyStatus" class="wp-copy-status"></p>
-          <textarea id="wpPasteArea" rows="5" placeholder="AI 답변을 여기에 붙여넣으세요…"></textarea>
-          <button id="wpParseBtn" class="curator-note-save-btn wp-parse-btn">분석하기 →</button>
-        </div>
-        <!-- Step 2: 요일별 후보 선택 -->
-        <div class="weekly-plan-step" id="wpStep2" style="display:none">
-          <div class="wp-day-tabs" id="wpDayTabs"></div>
-          <div id="wpCandidatesArea"></div>
-          <p id="wpSelectStatus" class="wp-copy-status"></p>
-        </div>
-      </div>
-      <div class="curator-note-edit-footer" id="wpFooter" style="display:none">
-        <button id="wpBackBtn" class="wp-outline-btn">← 다시 붙여넣기</button>
-        <button id="wpSaveBtn" class="curator-note-save-btn">✅ 선택 저장</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== CURATOR NOTE EDIT DRAWER ===== -->
-  <div id="curatorNoteEditDrawer" role="dialog" aria-modal="true" aria-label="큐레이터란 작성">
-    <div class="curator-note-edit-panel">
-      <div class="curator-note-edit-header">
-        <span class="curator-note-edit-title">✏️ 큐레이터란 작성</span>
-        <button id="curatorNoteEditClose" aria-label="닫기">✕</button>
-      </div>
-      <div class="curator-note-edit-body">
-        <p class="curator-note-edit-hint">독자에게 전하고 싶은 한 마디 — 이 이야기를 고른 이유, 오늘의 단상을 자유롭게 써주세요.</p>
-        <textarea id="curatorNoteEditArea" rows="6" placeholder="사랑하는 사람을 그리워하는 것만으로 살아갈 용기를 얻습니다..."></textarea>
-      </div>
-      <div class="curator-note-edit-footer">
-        <button id="curatorNoteEditSave" class="curator-note-save-btn">저장</button>
-      </div>
-    </div>
-  </div>
-
   <!-- ===== APP LAYOUT ===== -->
   <div class="app-layout">
 
@@ -205,7 +149,7 @@
     </div><!-- /.main-wrapper -->
   </div><!-- /.app-layout -->
 
-  <script src="js/data.js?v=20260602"></script>
-  <script src="js/app.js?v=20260602"></script>
+  <script src="js/data.js?v=20260606"></script>
+  <script src="js/app.js?v=20260606"></script>
 </body>
 </html>
