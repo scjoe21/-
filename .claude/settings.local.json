@@ -43,7 +43,9 @@
       "Bash(python -c \"import yaml,sys; yaml.safe_load\\(open\\('.github/workflows/weekly-stories.yml',encoding='utf-8'\\)\\); print\\('yaml OK'\\)\")",
       "Bash(gh workflow *)",
       "Bash(python -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/weekly-stories.yml',encoding='utf-8'\\)\\); print\\('yaml OK'\\)\")",
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(npm ls *)",
+      "Bash(echo \"exit=$?\")"
     ]
   }
 }
