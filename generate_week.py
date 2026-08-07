@@ -8,6 +8,7 @@ js/data.js 의 NEXT_WEEK_STORIES(마커 @AUTO-WEEK)를 통째로 교체한다.
 표시 시점은 data.js 의 _isLive() 가 처리 → 직전 토요일 0시 자동 게재.
 
 선택(번호 고르기) 단계 없음. 토요일(6) 없음 — 월~금만.
+월~금 중 하루는 반드시 아시아권(한국·중국·일본·중동 등) 이야기 — 요일은 매주 회전.
 
 환경변수:
   ANTHROPIC_API_KEY  (필수)
@@ -44,6 +45,10 @@ CONDITION = {
     "감동": "오래 버텨온 것 자체가 감동이 되는 이야기",
 }
 
+# 한 주 5편 중 정확히 하루는 아시아권 이야기. 담당 요일은 매주 회전(같은 요일 고정 방지).
+ASIA_SCOPE = ("한국·중국·일본·대만·몽골 등 동아시아, 베트남·태국·인도네시아 등 동남아시아, "
+              "인도·파키스탄 등 남아시아, 또는 중동(페르시아/이란·아랍·튀르키예 등) 아시아 국가")
+
 
 # ──────────────────────────────────────────────────────────
 # 날짜/라벨 계산
@@ -65,6 +70,11 @@ def week_label(mon: date) -> str:
 def published_date(mon: date, day: int) -> str:
     d = mon + timedelta(days=day - 1)
     return f"{d.year}년 {d.month}월 {d.day}일"
+
+
+def asia_day(mon: date) -> int:
+    """그 주의 '아시아 담당' 요일(1~5). ISO 주차로 회전시켜 매주 다른 요일에 배정."""
+    return (mon.isocalendar()[1] % 5) + 1
 
 
 # ──────────────────────────────────────────────────────────
@@ -91,10 +101,19 @@ def parse_current_next(region: str):
 # ──────────────────────────────────────────────────────────
 # Claude 호출 — 하루치 1편 (풀 스키마)
 # ──────────────────────────────────────────────────────────
-def generate_story(client, day: int, primary: str, avoid: list, extra: str = "") -> dict:
+def generate_story(client, day: int, primary: str, avoid: list, extra: str = "",
+                   require_asia: bool = False) -> dict:
     avoid_str = ", ".join(avoid[-220:])  # 너무 길면 최근 것 위주
+    region_rule = (
+        f"""
+[지역 조건 — 어기면 실패]
+- 이 편은 반드시 {ASIA_SCOPE}의 인물·사건 실화여야 합니다. 유럽·미국 등 서양 인물/사건은 금지.
+- 아시아에서 활동했더라도 주인공이 서양인이면 안 됩니다. 그 나라 사람의 이야기여야 합니다.
+- 위 조건을 지키면서도 '아주 유명한 인물' 금지 기준은 그대로 적용됩니다(예: 세종대왕·공자·간디급 금지).
+""" if require_asia else "")
     prompt = f"""당신은 한국어 뉴스레터 '통찰·유머·감동'의 큐레이터입니다.
 '{DAY_NAME[day]}'에 실을 역사·인물 실화 1편을 작성하세요. 주(主) 유형은 '{primary}'입니다.
+{region_rule}
 
 [지켜야 할 기존 기준]
 - 실제 역사적 사건·실험·인물 일화에 기반(가상·창작 금지).
@@ -142,9 +161,13 @@ def generate_story(client, day: int, primary: str, avoid: list, extra: str = "")
     return obj
 
 
-def fact_check(client, o: dict) -> dict:
-    """2차 사실검증 — 제목·출처 인물 일치, 명백한 사실 오류, 날조 인용, 과도한 유명세를 점검."""
+def fact_check(client, o: dict, require_asia: bool = False) -> dict:
+    """2차 사실검증 — 제목·출처 인물 일치, 명백한 사실 오류, 날조 인용, 과도한 유명세를 점검.
+    require_asia 면 '아시아권 이야기인가'도 함께 점검한다."""
     body = "\n".join(o.get("body", []))
+    asia_rule = (f"\n5. 주인공/사건이 {ASIA_SCOPE}가 아닌가? "
+                 "(서양 인물·사건이면 문제로 지적)") if require_asia else ""
+    fail_items = "1~3" + ("·5" if require_asia else "")
     prompt = f"""다음은 한국어 뉴스레터에 실릴 역사 인물 실화입니다. 사실 검증만 하세요.
 
 제목: {o.get('title','')}
@@ -156,10 +179,10 @@ def fact_check(client, o: dict) -> dict:
 1. 제목의 인물명이 출처의 실제 인물과 다른가? (다른 사람 이름이 제목에 있는가)
 2. 명백한 사실 오류가 있는가? (인물명·지명·연도·수치·사건 — 예: 실제 거주지가 다름)
 3. 날조됐을 가능성이 높은 직접 인용("…")이 있는가?
-4. 누구나 아는 교과서·위인전 단골(아주 유명한) 인물·일화인가?
+4. 누구나 아는 교과서·위인전 단골(아주 유명한) 인물·일화인가?{asia_rule}
 
 JSON만 출력(코드블록 금지): {{"ok": true/false, "problems": ["문제1","문제2"]}}
-사소한 표현은 넘어가고, 위 1~3에 해당하는 분명한 오류가 있을 때만 ok=false."""
+사소한 표현은 넘어가고, 위 {fail_items}에 해당하는 분명한 오류가 있을 때만 ok=false."""
     msg = client.messages.create(
         model=MODEL, max_tokens=800,
         messages=[{"role": "user", "content": prompt}],
@@ -172,18 +195,19 @@ JSON만 출력(코드블록 금지): {{"ok": true/false, "problems": ["문제1",
         return {"ok": True, "problems": []}   # 파싱 실패 시 통과(생성 자체는 막지 않음)
 
 
-def generate_verified(client, day: int, primary: str, avoid: list) -> dict:
+def generate_verified(client, day: int, primary: str, avoid: list,
+                      require_asia: bool = False) -> dict:
     """생성 → 사실검증 → 문제 있으면 1회 재생성. 최선본 반환."""
-    o = generate_story(client, day, primary, avoid)
-    chk = fact_check(client, o)
+    o = generate_story(client, day, primary, avoid, require_asia=require_asia)
+    chk = fact_check(client, o, require_asia=require_asia)
     if chk.get("ok", True):
         return o
     problems = "; ".join(chk.get("problems", []))
     print(f"    ⚠ 검증 지적: {problems} → 재생성", flush=True)
     note = ("[직전 시도의 문제 — 반드시 교정]\n- " +
             "\n- ".join(chk.get("problems", [])) + "\n")
-    o2 = generate_story(client, day, primary, avoid, extra=note)
-    chk2 = fact_check(client, o2)
+    o2 = generate_story(client, day, primary, avoid, extra=note, require_asia=require_asia)
+    chk2 = fact_check(client, o2, require_asia=require_asia)
     if not chk2.get("ok", True):
         print(f"    ⚠ 재생성 후에도 지적 남음: {'; '.join(chk2.get('problems', []))} (재생성본 채택)",
               flush=True)
@@ -302,11 +326,14 @@ def main():
     client = anthropic.Anthropic(api_key=key)
 
     avoid = used_titles(content)
+    aday = asia_day(mon)
+    print(f"  · 이번 주 아시아 담당: {DAY_NAME[aday]}", flush=True)
     parts = []
     for day in range(1, 6):
         primary = PRIMARY_BY_DAY[day]
-        print(f"  · {DAY_NAME[day]} ({primary}) 생성·검증 중…", flush=True)
-        o = generate_verified(client, day, primary, avoid)
+        tag = " · 아시아" if day == aday else ""
+        print(f"  · {DAY_NAME[day]} ({primary}{tag}) 생성·검증 중…", flush=True)
+        o = generate_verified(client, day, primary, avoid, require_asia=(day == aday))
         avoid.append(o["title"])  # 이번 주 안에서도 중복 방지
         parts.append(story_to_js(day, mon, o))
     new_block = build_next_block(mon, "\n\n".join(parts))
